@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>VehiTrack | Vehicle Due Date Reminder System</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #050b1a 0%, #0a0f2a 50%, #030617 100%);
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bg-gradient {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at 20% 40%, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.1) 50%, transparent 80%);
+            animation: slowDrift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes slowDrift {
+            0% {
+                transform: translate(-5%, -5%) rotate(0deg);
+            }
+            100% {
+                transform: translate(5%, 5%) rotate(5deg);
+            }
+        }
+
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            animation: floatParticle 12s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main card - enhanced visibility */
+        .login-card {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 500px;
+            background: rgba(10, 20, 40, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(59, 130, 246, 0.2) inset;
+            transition: all 0.3s ease;
+            animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-content {
+            padding: 2.5rem;
+        }
+
+        /* Responsive padding */
+        @media (max-width: 640px) {
+            .card-content {
+                padding: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-content {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Header section */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            padding: 0.8rem 1.2rem;
+            border-radius: 3rem;
+            margin-bottom: 1.2rem;
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 12px rgba(59, 130, 246, 0);
+            }
+        }
+
+        .icon-wrapper i {
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #94a3f8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+        }
+
+        .tagline {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tagline i {
+            color: #3b82f6;
+            font-size: 0.7rem;
+        }
+
+        /* Form groups - enhanced visibility */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .input-label i {
+            color: #3b82f6;
+            font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            color: #64748b;
+            font-size: 1rem;
+            transition: color 0.2s;
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1.5px solid rgba(59, 130, 246, 0.3);
+            border-radius: 1rem;
+            font-size: 1rem;
+            color: #ffffff;
+            font-weight: 500;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .form-input::placeholder {
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        /* Validation messages */
+        .validation-message {
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            margin-left: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .validation-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .validation-message.error {
+            color: #f87171;
+        }
+
+        .validation-message.success {
+            color: #4ade80;
+        }
+
+        /* Login button */
+        .login-button {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            border-radius: 1rem;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .login-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        /* Credentials card */
+        .credentials-card {
+            margin-top: 2rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .credentials-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cred-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .badge {
+            background: rgba(59, 130, 246, 0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .badge i {
+            color: #3b82f6;
+            font-size: 0.7rem;
+        }
+
+        .demo-note {
+            font-size: 0.65rem;
+            color: #64748b;
+            margin-top: 0.6rem;
+            text-align: center;
+        }
+
+        /* Toast notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 1.5rem;
+            border-radius: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            pointer-events: none;
+            border-left: 3px solid #3b82f6;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            font-size: 1.2rem;
+        }
+
+        .toast-text {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        /* Loading state */
+        .login-button.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .login-card {
+                max-width: 450px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 0.8rem;
+            }
+            
+            .form-input {
+                padding: 0.8rem 1rem 0.8rem 2.5rem;
+                font-size: 0.95rem;
+            }
+            
+            .badge {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-content {
+                padding: 1.3rem;
+            }
+            
+            .icon-wrapper i {
+                font-size: 1.4rem;
+            }
+            
+            .icon-wrapper {
+                padding: 0.6rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="bg-gradient"></div>
+        <div class="floating-particles" id="particles"></div>
+    </div>
+
+    <div class="login-card">
+        <div class="card-content">
+            <div class="logo-section">
+                <div class="icon-wrapper">
+                    <i class="fas fa-car"></i>
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h1>VehiTrack</h1>
+                <div class="tagline">
+                    <i class="fas fa-clock"></i>
+                    <span>Vehicle Due Date Reminder System</span>
+                    <i class="fas fa-bell"></i>
+                </div>
+            </div>
+
+            <form id="loginForm" method="POST" action="{% url 'admin_dashboard' %}">
+                <!-- Username Field -->
+                <div class="form-group">
+                    <label class="input-label">
+                        <i class="fas fa-user-circle"></i>
+                        Username
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user input-icon"></i>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username"
+                            class="form-input" 
+                            placeholder="Enter your username"
+                            autocomplete="off"
+                            required
+                        >
+                    </div>
+                    <div id="usernameValidation" class="validation-message"></div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label class="input-label">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-key input-icon"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            required
+                        >
+                    </div>
+                    <div id="passwordValidation" class="validation-message"></div>
+                </div>
+
+                <!-- Hidden CSRF token for Django - will be submitted with form -->
+                {% csrf_token %}
+                
+                <button type="submit" id="loginBtn" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Access Dashboard</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Credentials Reference Card -->
+            <div class="credentials-card">
+                <div class="credentials-title">
+                    <i class="fas fa-info-circle"></i>
+                    <span>DEMO CREDENTIALS</span>
+                </div>
+                <div class="cred-badges">
+                    <div class="badge">
+                        <i class="fas fa-user"></i>
+                        <span>Username: admin</span>
+                    </div>
+                    <div class="badge">
+                        <i class="fas fa-lock"></i>
+                        <span>Password: 123</span>
+                    </div>
+                </div>
+                <div class="demo-note">
+                    <i class="fas fa-shield-alt"></i> Hardcoded credentials for system access
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastMessage" class="toast-notification">
+        <i class="fas toast-icon"></i>
+        <span class="toast-text"></span>
+    </div>
+
+    <script>
+        // Hardcoded credentials
+        const VALID_USERNAME = "admin";
+        const VALID_PASSWORD = "123";
+
+        // DOM Elements
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const usernameValidation = document.getElementById('usernameValidation');
+        const passwordValidation = document.getElementById('passwordValidation');
+        const toastMessage = document.getElementById('toastMessage');
+
+        // Create floating particles for visual effect
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = Math.random() * 10 + 8 + 's';
+                particle.style.opacity = Math.random() * 0.4 + 0.2;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Show toast notification
+        function showToast(message, isError = false) {
+            const toast = toastMessage;
+            const icon = toast.querySelector('.toast-icon');
+            const text = toast.querySelector('.toast-text');
+            
+            text.textContent = message;
+            
+            if (isError) {
+                icon.className = 'fas fa-exclamation-circle toast-icon';
+                icon.style.color = '#f87171';
+                toast.style.borderLeftColor = '#f87171';
+            } else {
+                icon.className = 'fas fa-check-circle toast-icon';
+                icon.style.color = '#4ade80';
+                toast.style.borderLeftColor = '#4ade80';
+            }
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Validate username with local feedback
+        function validateUsername() {
+            const username = usernameInput.value;
+            
+            if (!username) {
+                usernameValidation.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Username is required';
+                usernameValidation.classList.add('show', 'error');
+                usernameValidation.classList.remove('success');
+                return false;
+            }
+            
+            if (username !== VALID_USERNAME) {
+                usernameValidation.innerHTML = '<i class="fas fa-times-circle"></i> Incorrect username';
+                usernameValidation.classList.add('show', 'error');
+                usernameValidation.classList.remove('success');
+                return false;
+            }
+            
+            usernameValidation.innerHTML = '<i class="fas fa-check-circle"></i> Username verified';
+            usernameValidation.classList.add('show', 'success');
+            usernameValidation.classList.remove('error');
+            return true;
+        }
+
+        // Validate password with local feedback
+        function validatePassword() {
+            const password = passwordInput.value;
+            
+            if (!password) {
+                passwordValidation.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Password is required';
+                passwordValidation.classList.add('show', 'error');
+                passwordValidation.classList.remove('success');
+                return false;
+            }
+            
+            if (password !== VALID_PASSWORD) {
+                passwordValidation.innerHTML = '<i class="fas fa-times-circle"></i> Incorrect password (use: 123)';
+                passwordValidation.classList.add('show', 'error');
+                passwordValidation.classList.remove('success');
+                return false;
+            }
+            
+            passwordValidation.innerHTML = '<i class="fas fa-check-circle"></i> Password verified';
+            passwordValidation.classList.add('show', 'success');
+            passwordValidation.classList.remove('error');
+            return true;
+        }
+
+        // Clear validation on input
+        usernameInput.addEventListener('input', () => {
+            if (usernameInput.value === '') {
+                usernameValidation.classList.remove('show');
+            } else {
+                validateUsername();
+            }
+        });
+
+        passwordInput.addEventListener('input', () => {
+            if (passwordInput.value === '') {
+                passwordValidation.classList.remove('show');
+            } else {
+                validatePassword();
+            }
+        });
+
+        // Handle blur events for better UX
+        usernameInput.addEventListener('blur', validateUsername);
+        passwordInput.addEventListener('blur', validatePassword);
+
+        // Handle form submission with local validation and redirect to Django admin_dashboard
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Perform local validation
+            const isUsernameValid = validateUsername();
+            const isPasswordValid = validatePassword();
+            
+            if (!isUsernameValid || !isPasswordValid) {
+                showToast('Invalid credentials! Please check username and password', true);
+                
+                // Shake animation for error
+                const card = document.querySelector('.login-card');
+                card.style.transform = 'translateX(6px)';
+                setTimeout(() => { card.style.transform = ''; }, 100);
+                card.style.animation = 'none';
+                setTimeout(() => { card.style.animation = 'slideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1)'; }, 200);
+                return;
+            }
+            
+            // Get form data
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            
+            // Verify credentials match hardcoded values
+            if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                // Show loading state
+                loginBtn.classList.add('loading');
+                const originalText = loginBtn.innerHTML;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Authenticating...';
+                
+                // Show success toast
+                showToast('Login successful! Redirecting to dashboard...', false);
+                
+                // Simulate slight delay for better UX, then submit the form
+                // This allows the Django backend to handle the actual authentication
+                // and redirect to admin_dashboard URL
+                setTimeout(() => {
+                    // Since we have the form with action="{% url 'admin_dashboard' %}"
+                    // and CSRF token, we can submit it normally
+                    // The Django backend will handle the session and authentication
+                    
+                    // Create a hidden input to indicate successful local validation
+                    // or we can just submit the form directly
+                    // The Django view should validate credentials again for security
+                    
+                    // For the form to work properly with Django, we need to ensure
+                    // the view receives the POST data. We'll submit the form with
+                    // the hardcoded credentials validated locally, and let Django
+                    // handle the rest.
+                    
+                    // If the Django view expects the same credentials, it will work.
+                    // We'll submit the form to the Django URL
+                    loginForm.submit();
+                }, 800);
+            } else {
+                showToast('Authentication failed. Please use the correct credentials.', true);
+                loginBtn.classList.remove('loading');
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>Access Dashboard</span><i class="fas fa-arrow-right"></i>';
+            }
+        });
+
+        // Create visual effects
+        createParticles();
+
+        // Add responsive resize handler for better visibility
+        window.addEventListener('resize', () => {
+            // Adjust any responsive behaviors if needed
+            const card = document.querySelector('.login-card');
+            if (window.innerWidth < 480) {
+                card.style.maxWidth = '95%';
+            } else {
+                card.style.maxWidth = '500px';
+            }
+        });
+
+        // Initialize responsive width
+        if (window.innerWidth < 480) {
+            document.querySelector('.login-card').style.maxWidth = '95%';
+        }
+
+        // Add keyboard support for Enter key
+        usernameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                passwordInput.focus();
+            }
+        });
+        
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                loginForm.dispatchEvent(new Event('submit'));
+            }
+        });
+        
+        // Optional: Pre-fill for demo convenience (but not auto-filling for security)
+        // Just to show demo users, but not auto-fill
+        console.log('Vehicle Due Date Reminder System - Ready');
+    </script>
+</body>
+</html>

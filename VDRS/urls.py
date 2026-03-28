@@ -21,5 +21,7 @@ from AdminApp import urls as admin_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('software/', include(admin_urls)),
+    path('login/', admin_urls.login, name='login'),
+
 
 ]

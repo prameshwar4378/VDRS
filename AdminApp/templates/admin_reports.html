@@ -1,0 +1,1280 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Reports{% endblock title %}
+
+{% block content %}
+
+<main id="main" class="main">
+ 
+
+  <div class="reports-dashboard">
+  <!-- Page Header -->
+  <div class="reports-header">
+    <div class="header-content">
+      <div class="title-section">
+        <i class="bi bi-file-earmark-text-fill"></i>
+        <div>
+          <h1>Reports & Analytics</h1>
+          <p>Generate, export, and analyze vehicle compliance reports</p>
+        </div>
+      </div>
+      <div class="date-range">
+        <div class="date-input">
+          <i class="bi bi-calendar3"></i>
+          <span>Last 30 Days</span>
+          <i class="bi bi-chevron-down"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon blue">
+        <i class="bi bi-file-text"></i>
+      </div>
+      <div class="stat-info">
+        <h3>12</h3>
+        <p>Reports Generated</p>
+        <span>This month</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">
+        <i class="bi bi-download"></i>
+      </div>
+      <div class="stat-info">
+        <h3>8</h3>
+        <p>Exports Completed</p>
+        <span>Last 7 days</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange">
+        <i class="bi bi-bell"></i>
+      </div>
+      <div class="stat-info">
+        <h3>24</h3>
+        <p>Due Reminders</p>
+        <span>Upcoming deadlines</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">
+        <i class="bi bi-check2-circle"></i>
+      </div>
+      <div class="stat-info">
+        <h3>86%</h3>
+        <p>Compliance Rate</p>
+        <span>Overall fleet</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Types Section -->
+  <div class="section-title">
+    <i class="bi bi-grid-3x3-gap-fill"></i>
+    <h2>Report Categories</h2>
+  </div>
+
+  <div class="report-categories">
+    <div class="category-card active">
+      <i class="bi bi-calendar-check"></i>
+      <h4>Due Date Reports</h4>
+      <p>Upcoming & expired deadlines</p>
+    </div>
+    <div class="category-card">
+      <i class="bi bi-truck"></i>
+      <h4>Vehicle Summary</h4>
+      <p>Complete fleet overview</p>
+    </div>
+    <div class="category-card">
+      <i class="bi bi-graph-up"></i>
+      <h4>Compliance Analytics</h4>
+      <p>Performance metrics</p>
+    </div>
+    <div class="category-card">
+      <i class="bi bi-clock-history"></i>
+      <h4>Historical Data</h4>
+      <p>Past due records</p>
+    </div>
+  </div>
+
+  <!-- Main Reports Grid -->
+  <div class="reports-grid">
+    <!-- Due Date Reports -->
+    <div class="report-card">
+      <div class="report-header">
+        <div class="report-icon due">
+          <i class="bi bi-calendar-exclamation"></i>
+        </div>
+        <div class="report-info">
+          <h3>Due Date Summary Report</h3>
+          <p>All vehicles with upcoming or expired due dates</p>
+        </div>
+      </div>
+      <div class="report-preview">
+        <div class="preview-stats">
+          <div class="preview-stat">
+            <span class="stat-label">Expired</span>
+            <span class="stat-value critical">3</span>
+          </div>
+          <div class="preview-stat">
+            <span class="stat-label">Due in 7 days</span>
+            <span class="stat-value warning">8</span>
+          </div>
+          <div class="preview-stat">
+            <span class="stat-label">Due in 30 days</span>
+            <span class="stat-value info">12</span>
+          </div>
+        </div>
+      </div>
+      <div class="report-actions">
+        <button class="export-btn pdf" onclick="generateReport('due-date', 'pdf')">
+          <i class="bi bi-filetype-pdf"></i> PDF
+        </button>
+        <button class="export-btn excel" onclick="generateReport('due-date', 'excel')">
+          <i class="bi bi-filetype-xlsx"></i> Excel
+        </button>
+        <button class="export-btn csv" onclick="generateReport('due-date', 'csv')">
+          <i class="bi bi-filetype-csv"></i> CSV
+        </button>
+        <button class="export-btn print" onclick="generateReport('due-date', 'print')">
+          <i class="bi bi-printer"></i> Print
+        </button>
+      </div>
+    </div>
+
+    <!-- Vehicle Wise Report -->
+    <div class="report-card">
+      <div class="report-header">
+        <div class="report-icon vehicle">
+          <i class="bi bi-truck"></i>
+        </div>
+        <div class="report-info">
+          <h3>Vehicle Wise Due Report</h3>
+          <p>Detailed due dates per vehicle</p>
+        </div>
+      </div>
+      <div class="report-preview">
+        <div class="vehicle-list">
+          <div class="vehicle-item">
+            <span>MH 12 AB 1234</span>
+            <span class="badge warning">3 dues pending</span>
+          </div>
+          <div class="vehicle-item">
+            <span>DL 3C QR 5678</span>
+            <span class="badge critical">1 expired</span>
+          </div>
+          <div class="vehicle-item">
+            <span>KA 51 MN 9090</span>
+            <span class="badge good">All compliant</span>
+          </div>
+        </div>
+      </div>
+      <div class="report-actions">
+        <button class="export-btn pdf" onclick="generateReport('vehicle-wise', 'pdf')">
+          <i class="bi bi-filetype-pdf"></i> PDF
+        </button>
+        <button class="export-btn excel" onclick="generateReport('vehicle-wise', 'excel')">
+          <i class="bi bi-filetype-xlsx"></i> Excel
+        </button>
+        <button class="export-btn csv" onclick="generateReport('vehicle-wise', 'csv')">
+          <i class="bi bi-filetype-csv"></i> CSV
+        </button>
+        <button class="export-btn print" onclick="generateReport('vehicle-wise', 'print')">
+          <i class="bi bi-printer"></i> Print
+        </button>
+      </div>
+    </div>
+
+    <!-- Document Type Report -->
+    <div class="report-card">
+      <div class="report-header">
+        <div class="report-icon document">
+          <i class="bi bi-file-earmark-text"></i>
+        </div>
+        <div class="report-info">
+          <h3>Document Type Summary</h3>
+          <p>Breakdown by document category</p>
+        </div>
+      </div>
+      <div class="report-preview">
+        <div class="document-stats">
+          <div class="doc-item">
+            <span>Insurance</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 85%"></div>
+            </div>
+            <span>12/15</span>
+          </div>
+          <div class="doc-item">
+            <span>PUC</span>
+            <div class="progress">
+              <div class="progress-bar warning" style="width: 65%"></div>
+            </div>
+            <span>8/12</span>
+          </div>
+          <div class="doc-item">
+            <span>Road Tax</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 90%"></div>
+            </div>
+            <span>14/15</span>
+          </div>
+          <div class="doc-item">
+            <span>Fitness</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 75%"></div>
+            </div>
+            <span>10/13</span>
+          </div>
+        </div>
+      </div>
+      <div class="report-actions">
+        <button class="export-btn pdf" onclick="generateReport('document-type', 'pdf')">
+          <i class="bi bi-filetype-pdf"></i> PDF
+        </button>
+        <button class="export-btn excel" onclick="generateReport('document-type', 'excel')">
+          <i class="bi bi-filetype-xlsx"></i> Excel
+        </button>
+        <button class="export-btn csv" onclick="generateReport('document-type', 'csv')">
+          <i class="bi bi-filetype-csv"></i> CSV
+        </button>
+        <button class="export-btn print" onclick="generateReport('document-type', 'print')">
+          <i class="bi bi-printer"></i> Print
+        </button>
+      </div>
+    </div>
+
+    <!-- Compliance Report -->
+    <div class="report-card">
+      <div class="report-header">
+        <div class="report-icon compliance">
+          <i class="bi bi-shield-check"></i>
+        </div>
+        <div class="report-info">
+          <h3>Compliance Status Report</h3>
+          <p>Overall fleet compliance metrics</p>
+        </div>
+      </div>
+      <div class="report-preview">
+        <div class="compliance-chart">
+          <div class="chart-circle">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#e2edf2" stroke-width="8"/>
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#2c7a6e" stroke-width="8" 
+                      stroke-dasharray="283" stroke-dashoffset="56" stroke-linecap="round"/>
+            </svg>
+            <div class="chart-label">
+              <span>86%</span>
+              <small>Compliant</small>
+            </div>
+          </div>
+          <div class="compliance-details">
+            <div><span>Compliant:</span> <strong>38 vehicles</strong></div>
+            <div><span>At Risk:</span> <strong>8 vehicles</strong></div>
+            <div><span>Non-Compliant:</span> <strong>4 vehicles</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="report-actions">
+        <button class="export-btn pdf" onclick="generateReport('compliance', 'pdf')">
+          <i class="bi bi-filetype-pdf"></i> PDF
+        </button>
+        <button class="export-btn excel" onclick="generateReport('compliance', 'excel')">
+          <i class="bi bi-filetype-xlsx"></i> Excel
+        </button>
+        <button class="export-btn csv" onclick="generateReport('compliance', 'csv')">
+          <i class="bi bi-filetype-csv"></i> CSV
+        </button>
+        <button class="export-btn print" onclick="generateReport('compliance', 'print')">
+          <i class="bi bi-printer"></i> Print
+        </button>
+      </div>
+    </div>
+
+    <!-- Expiry Trend Report -->
+    <div class="report-card">
+      <div class="report-header">
+        <div class="report-icon trend">
+          <i class="bi bi-graph-up"></i>
+        </div>
+        <div class="report-info">
+          <h3>Expiry Trend Analysis</h3>
+          <p>Monthly expiry patterns</p>
+        </div>
+      </div>
+      <div class="report-preview">
+        <div class="trend-bars">
+          <div class="trend-bar">
+            <span>Jan</span>
+            <div class="bar" style="height: 40px"></div>
+            <span>4</span>
+          </div>
+          <div class="trend-bar">
+            <span>Feb</span>
+            <div class="bar" style="height: 60px"></div>
+            <span>6</span>
+          </div>
+          <div class="trend-bar">
+            <span>Mar</span>
+            <div class="bar" style="height: 80px"></div>
+            <span>8</span>
+          </div>
+          <div class="trend-bar">
+            <span>Apr</span>
+            <div class="bar" style="height: 45px"></div>
+            <span>5</span>
+          </div>
+          <div class="trend-bar">
+            <span>May</span>
+            <div class="bar" style="height: 95px"></div>
+            <span>10</span>
+          </div>
+          <div class="trend-bar">
+            <span>Jun</span>
+            <div class="bar" style="height: 70px"></div>
+            <span>7</span>
+          </div>
+        </div>
+      </div>
+      <div class="report-actions">
+        <button class="export-btn pdf" onclick="generateReport('trend', 'pdf')">
+          <i class="bi bi-filetype-pdf"></i> PDF
+        </button>
+        <button class="export-btn excel" onclick="generateReport('trend', 'excel')">
+          <i class="bi bi-filetype-xlsx"></i> Excel
+        </button>
+        <button class="export-btn csv" onclick="generateReport('trend', 'csv')">
+          <i class="bi bi-filetype-csv"></i> CSV
+        </button>
+        <button class="export-btn print" onclick="generateReport('trend', 'print')">
+          <i class="bi bi-printer"></i> Print
+        </button>
+      </div>
+    </div>
+
+    <!-- Owner Report -->
+    <div class="report-card">
+      <div class="report-header">
+        <div class="report-icon owner">
+          <i class="bi bi-people"></i>
+        </div>
+        <div class="report-info">
+          <h3>Owner/Operator Report</h3>
+          <p>Vehicle owners with due reminders</p>
+        </div>
+      </div>
+      <div class="report-preview">
+        <div class="owner-stats">
+          <div class="owner-item">
+            <i class="bi bi-person-circle"></i>
+            <div>
+              <strong>Rajesh Sharma</strong>
+              <span>2 vehicles · 3 dues pending</span>
+            </div>
+          </div>
+          <div class="owner-item">
+            <i class="bi bi-person-circle"></i>
+            <div>
+              <strong>Priya Patel</strong>
+              <span>1 vehicle · 1 expired</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="report-actions">
+        <button class="export-btn pdf" onclick="generateReport('owner', 'pdf')">
+          <i class="bi bi-filetype-pdf"></i> PDF
+        </button>
+        <button class="export-btn excel" onclick="generateReport('owner', 'excel')">
+          <i class="bi bi-filetype-xlsx"></i> Excel
+        </button>
+        <button class="export-btn csv" onclick="generateReport('owner', 'csv')">
+          <i class="bi bi-filetype-csv"></i> CSV
+        </button>
+        <button class="export-btn print" onclick="generateReport('owner', 'print')">
+          <i class="bi bi-printer"></i> Print
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Report Builder -->
+  <div class="custom-report">
+    <div class="custom-header">
+      <i class="bi bi-sliders2"></i>
+      <h3>Custom Report Builder</h3>
+      <p>Select specific fields and filters</p>
+    </div>
+    <div class="custom-fields">
+      <div class="field-group">
+        <label>Select Vehicle(s)</label>
+        <select multiple>
+          <option>All Vehicles</option>
+          <option>MH 12 AB 1234</option>
+          <option>DL 3C QR 5678</option>
+          <option>KA 51 MN 9090</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Document Type</label>
+        <select>
+          <option>All Documents</option>
+          <option>Insurance</option>
+          <option>PUC</option>
+          <option>Road Tax</option>
+          <option>Fitness</option>
+          <option>Health/Permit</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Date Range</label>
+        <div class="date-range-select">
+          <input type="date" placeholder="From">
+          <input type="date" placeholder="To">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Status Filter</label>
+        <select>
+          <option>All Status</option>
+          <option>Expired</option>
+          <option>Due in 7 days</option>
+          <option>Due in 30 days</option>
+          <option>Compliant</option>
+        </select>
+      </div>
+    </div>
+    <div class="custom-actions">
+      <button class="preview-btn">
+        <i class="bi bi-eye"></i> Preview Report
+      </button>
+      <button class="generate-btn">
+        <i class="bi bi-file-text"></i> Generate Custom Report
+      </button>
+    </div>
+  </div>
+
+  <!-- Recent Reports -->
+  <div class="recent-reports">
+    <div class="section-title">
+      <i class="bi bi-clock-history"></i>
+      <h2>Recently Generated Reports</h2>
+    </div>
+    <div class="reports-list">
+      <div class="report-item">
+        <div class="report-file">
+          <i class="bi bi-filetype-pdf"></i>
+          <div>
+            <strong>Due_Date_Summary_15Jan2025.pdf</strong>
+            <span>Generated on 15 Jan 2025 · 2.4 MB</span>
+          </div>
+        </div>
+        <div class="report-actions-mini">
+          <button><i class="bi bi-download"></i></button>
+          <button><i class="bi bi-share"></i></button>
+          <button><i class="bi bi-trash"></i></button>
+        </div>
+      </div>
+      <div class="report-item">
+        <div class="report-file">
+          <i class="bi bi-filetype-xlsx"></i>
+          <div>
+            <strong>Compliance_Report_Jan2025.xlsx</strong>
+            <span>Generated on 14 Jan 2025 · 1.8 MB</span>
+          </div>
+        </div>
+        <div class="report-actions-mini">
+          <button><i class="bi bi-download"></i></button>
+          <button><i class="bi bi-share"></i></button>
+          <button><i class="bi bi-trash"></i></button>
+        </div>
+      </div>
+      <div class="report-item">
+        <div class="report-file">
+          <i class="bi bi-filetype-csv"></i>
+          <div>
+            <strong>Vehicle_Wise_Due_10Jan2025.csv</strong>
+            <span>Generated on 10 Jan 2025 · 856 KB</span>
+          </div>
+        </div>
+        <div class="report-actions-mini">
+          <button><i class="bi bi-download"></i></button>
+          <button><i class="bi bi-share"></i></button>
+          <button><i class="bi bi-trash"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.reports-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header */
+.reports-header {
+  background: white;
+  border-radius: 24px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.title-section i {
+  font-size: 2rem;
+  color: #2c7a6e;
+  background: #e3f5ec;
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+.title-section h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a4d5f;
+}
+
+.title-section p {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: #8aa3af;
+}
+
+.date-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.5rem 1rem;
+  background: #f9fbfd;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #1a4d5f;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.stat-icon.blue {
+  background: #eef2ff;
+  color: #2c628f;
+}
+
+.stat-icon.green {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+.stat-icon.orange {
+  background: #fff3e0;
+  color: #e67e22;
+}
+
+.stat-icon.purple {
+  background: #f3e8ff;
+  color: #8e44ad;
+}
+
+.stat-info h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a4d5f;
+}
+
+.stat-info p {
+  margin: 0.2rem 0;
+  font-size: 0.8rem;
+  color: #5c6f7e;
+}
+
+.stat-info span {
+  font-size: 0.7rem;
+  color: #8aa3af;
+}
+
+/* Section Title */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.section-title i {
+  font-size: 1.2rem;
+  color: #2c7a6e;
+}
+
+.section-title h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a4d5f;
+}
+
+/* Report Categories */
+.report-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.category-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.category-card.active {
+  border-color: #2c7a6e;
+  background: #e3f5ec;
+}
+
+.category-card i {
+  font-size: 1.5rem;
+  color: #2c7a6e;
+  margin-bottom: 0.5rem;
+}
+
+.category-card h4 {
+  margin: 0.5rem 0 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a4d5f;
+}
+
+.category-card p {
+  margin: 0;
+  font-size: 0.7rem;
+  color: #8aa3af;
+}
+
+/* Reports Grid */
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.report-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.report-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+
+.report-header {
+  padding: 1.2rem;
+  background: #f9fbfd;
+  display: flex;
+  gap: 1rem;
+  border-bottom: 1px solid #e2edf2;
+}
+
+.report-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.report-icon.due {
+  background: #fff3e0;
+  color: #e67e22;
+}
+
+.report-icon.vehicle {
+  background: #eef2ff;
+  color: #2c628f;
+}
+
+.report-icon.document {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+.report-icon.compliance {
+  background: #f3e8ff;
+  color: #8e44ad;
+}
+
+.report-icon.trend {
+  background: #fee9e6;
+  color: #bc5a3c;
+}
+
+.report-icon.owner {
+  background: #e0f2fe;
+  color: #3498db;
+}
+
+.report-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a4d5f;
+}
+
+.report-info p {
+  margin: 0.2rem 0 0;
+  font-size: 0.7rem;
+  color: #8aa3af;
+}
+
+.report-preview {
+  padding: 1.2rem;
+  border-bottom: 1px solid #eef2f5;
+}
+
+.preview-stats {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.preview-stat .stat-label {
+  font-size: 0.7rem;
+  color: #8aa3af;
+  display: block;
+}
+
+.preview-stat .stat-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.stat-value.critical { color: #bc5a3c; }
+.stat-value.warning { color: #e67e22; }
+.stat-value.info { color: #2c628f; }
+
+.vehicle-list, .owner-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vehicle-item, .owner-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: #f9fbfd;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+.badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.badge.warning {
+  background: #fff3e0;
+  color: #e67e22;
+}
+
+.badge.critical {
+  background: #fee9e6;
+  color: #bc5a3c;
+}
+
+.badge.good {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+.document-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.doc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.doc-item span:first-child {
+  width: 70px;
+  font-weight: 500;
+}
+
+.progress {
+  flex: 1;
+  height: 6px;
+  background: #e2edf2;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #2c7a6e;
+  border-radius: 3px;
+}
+
+.progress-bar.warning {
+  background: #e67e22;
+}
+
+.compliance-chart {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.chart-circle {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.chart-circle svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.chart-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.chart-label span {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a4d5f;
+}
+
+.chart-label small {
+  font-size: 0.6rem;
+  color: #8aa3af;
+  display: block;
+}
+
+.compliance-details {
+  font-size: 0.8rem;
+}
+
+.compliance-details div {
+  margin-bottom: 0.3rem;
+}
+
+.trend-bars {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 120px;
+  gap: 0.5rem;
+}
+
+.trend-bar {
+  text-align: center;
+  flex: 1;
+}
+
+.trend-bar .bar {
+  background: #2c7a6e;
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s;
+  margin-bottom: 0.3rem;
+}
+
+.trend-bar span {
+  font-size: 0.7rem;
+  color: #8aa3af;
+}
+
+.report-actions {
+  padding: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  background: #f9fbfd;
+}
+
+.export-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.export-btn.pdf {
+  background: #fee9e6;
+  color: #bc5a3c;
+}
+
+.export-btn.excel {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+.export-btn.csv {
+  background: #eef2ff;
+  color: #2c628f;
+}
+
+.export-btn.print {
+  background: #f1f5f9;
+  color: #5c6f7e;
+}
+
+.export-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.95);
+}
+
+/* Custom Report */
+.custom-report {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.custom-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.custom-header i {
+  font-size: 1.2rem;
+  color: #2c7a6e;
+}
+
+.custom-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a4d5f;
+}
+
+.custom-header p {
+  margin: 0;
+  font-size: 0.7rem;
+  color: #8aa3af;
+}
+
+.custom-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-group label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #5c6f7e;
+  text-transform: uppercase;
+}
+
+.field-group select, .field-group input {
+  padding: 0.6rem;
+  border: 1px solid #cbdde4;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-family: inherit;
+}
+
+.date-range-select {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.date-range-select input {
+  flex: 1;
+}
+
+.custom-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.preview-btn, .generate-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.preview-btn {
+  background: #f1f5f9;
+  color: #5c6f7e;
+}
+
+.generate-btn {
+  background: #2c7a6e;
+  color: white;
+}
+
+.preview-btn:hover, .generate-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Recent Reports */
+.recent-reports {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.report-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f9fbfd;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.report-item:hover {
+  background: #f1f5f9;
+}
+
+.report-file {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.report-file i {
+  font-size: 1.5rem;
+}
+
+.report-file strong {
+  display: block;
+  font-size: 0.85rem;
+  color: #1a4d5f;
+}
+
+.report-file span {
+  font-size: 0.7rem;
+  color: #8aa3af;
+}
+
+.report-actions-mini {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.report-actions-mini button {
+  background: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #5c6f7e;
+  transition: all 0.2s;
+}
+
+.report-actions-mini button:hover {
+  background: #e2edf2;
+  color: #1a4d5f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reports-dashboard {
+    padding: 1rem;
+  }
+  
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .custom-fields {
+    grid-template-columns: 1fr;
+  }
+  
+  .report-actions {
+    flex-wrap: wrap;
+  }
+  
+  .export-btn {
+    flex: auto;
+    min-width: 70px;
+  }
+  
+  .trend-bars {
+    height: 100px;
+  }
+}
+</style>
+
+<script>
+// Report generation functions (UI templates - no actual functionality)
+function generateReport(reportType, format) {
+  const reportNames = {
+    'due-date': 'Due Date Summary Report',
+    'vehicle-wise': 'Vehicle Wise Due Report',
+    'document-type': 'Document Type Summary',
+    'compliance': 'Compliance Status Report',
+    'trend': 'Expiry Trend Analysis',
+    'owner': 'Owner/Operator Report'
+  };
+  
+  const formatNames = {
+    'pdf': 'PDF',
+    'excel': 'Excel',
+    'csv': 'CSV',
+    'print': 'Print'
+  };
+  
+  const reportName = reportNames[reportType] || 'Custom Report';
+  const formatName = formatNames[format] || format.toUpperCase();
+  
+  // Simulate report generation
+  alert(`${reportName} is being generated as ${formatName} format.\n\nThis is a template UI. In production, this would download the actual report.`);
+  
+  // If print format, show print dialog
+  if (format === 'print') {
+    window.print();
+  }
+}
+
+// Category filter functionality
+document.querySelectorAll('.category-card').forEach(card => {
+  card.addEventListener('click', function() {
+    document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+    
+    const category = this.querySelector('h4').textContent;
+    alert(`Filtering reports by: ${category}\n\nThis would show only ${category} related reports.`);
+  });
+});
+
+// Custom report preview
+document.querySelector('.preview-btn')?.addEventListener('click', () => {
+  alert('Custom Report Preview\n\nThis would show a preview of your selected report based on the filters applied.');
+});
+
+document.querySelector('.generate-btn')?.addEventListener('click', () => {
+  alert('Custom Report Generation\n\nThis would generate and download your custom report based on the selected fields.');
+});
+
+// Date range selector
+document.querySelector('.date-input')?.addEventListener('click', () => {
+  alert('Date range selector would open here.\n\nYou can select custom date ranges for reports.');
+});
+</script>
+</main>
+ 
+{% endblock content %}

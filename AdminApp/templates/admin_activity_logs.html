@@ -1,0 +1,1305 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Activity Logs{% endblock title %}
+
+{% block content %}
+
+<main id="main" class="main">
+ 
+ 
+
+<div class="activity-history-dashboard">
+  <!-- Page Header -->
+  <div class="activity-header">
+    <div class="header-content">
+      <div class="title-section">
+        <i class="bi bi-activity"></i>
+        <div>
+          <h1>Activity History</h1>
+          <p>Track all system activities, updates, and user actions</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" placeholder="Search activities...">
+        </div>
+        <button class="filter-toggle-btn">
+          <i class="bi bi-funnel"></i> Filter
+        </button>
+        <button class="export-log-btn">
+          <i class="bi bi-download"></i> Export Logs
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity Stats Cards -->
+  <div class="activity-stats">
+    <div class="stat-card">
+      <div class="stat-icon blue">
+        <i class="bi bi-clock-history"></i>
+      </div>
+      <div class="stat-info">
+        <h3>1,284</h3>
+        <p>Total Activities</p>
+        <span>Last 30 days</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">
+        <i class="bi bi-pencil-square"></i>
+      </div>
+      <div class="stat-info">
+        <h3>342</h3>
+        <p>Updates</p>
+        <span>+12 this week</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange">
+        <i class="bi bi-plus-circle"></i>
+      </div>
+      <div class="stat-info">
+        <h3>86</h3>
+        <p>New Vehicles</p>
+        <span>Added this month</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">
+        <i class="bi bi-bell"></i>
+      </div>
+      <div class="stat-info">
+        <h3>245</h3>
+        <p>Notifications</p>
+        <span>Sent to owners</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section" id="filterSection" style="display: none;">
+    <div class="filter-grid">
+      <div class="filter-group">
+        <label>Activity Type</label>
+        <select id="activityType">
+          <option value="all">All Activities</option>
+          <option value="update">Updates</option>
+          <option value="create">Create/Add</option>
+          <option value="delete">Delete</option>
+          <option value="notification">Notifications</option>
+          <option value="export">Exports/Reports</option>
+          <option value="login">Login/Logout</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Date Range</label>
+        <div class="date-range">
+          <input type="date" id="startDate" placeholder="From">
+          <span>to</span>
+          <input type="date" id="endDate" placeholder="To">
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>User/Actor</label>
+        <select id="userFilter">
+          <option value="all">All Users</option>
+          <option value="admin">Admin User</option>
+          <option value="manager">Fleet Manager</option>
+          <option value="system">System Auto</option>
+          <option value="owner">Vehicle Owner</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Vehicle</label>
+        <select id="vehicleFilter">
+          <option value="all">All Vehicles</option>
+          <option value="MH12AB1234">MH 12 AB 1234</option>
+          <option value="DL3CQR5678">DL 3C QR 5678</option>
+          <option value="KA51MN9090">KA 51 MN 9090</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="apply-filter">Apply Filters</button>
+      <button class="clear-filter">Clear All</button>
+    </div>
+  </div>
+
+  <!-- Timeline View Toggle -->
+  <div class="view-toggle">
+    <button class="toggle-btn active" data-view="timeline">
+      <i class="bi bi-clock"></i> Timeline View
+    </button>
+    <button class="toggle-btn" data-view="list">
+      <i class="bi bi-list-ul"></i> List View
+    </button>
+  </div>
+
+  <!-- Activity Timeline -->
+  <div class="timeline-container" id="timelineView">
+    <!-- Today Section -->
+    <div class="timeline-section">
+      <div class="timeline-date-header">
+        <div class="date-badge today">
+          <i class="bi bi-calendar-day"></i>
+          <span>Today</span>
+          <small>15 Jan 2025</small>
+        </div>
+      </div>
+      
+      <div class="timeline-items">
+        <!-- Activity Item 1 -->
+        <div class="timeline-item">
+          <div class="timeline-icon update">
+            <i class="bi bi-pencil-square"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="activity-header">
+              <div class="activity-title">
+                <strong>Vehicle Insurance Updated</strong>
+                <span class="activity-badge update">Update</span>
+              </div>
+              <div class="activity-time">10:30 AM</div>
+            </div>
+            <div class="activity-details">
+              <div class="vehicle-info">
+                <i class="bi bi-truck"></i>
+                <span>MH 12 AB 1234</span>
+              </div>
+              <div class="change-details">
+                <div class="old-value">
+                  <i class="bi bi-arrow-left-right"></i>
+                  <span>Old: 15 June 2024</span>
+                </div>
+                <div class="new-value">
+                  <i class="bi bi-arrow-right-short"></i>
+                  <span>New: 15 June 2025</span>
+                </div>
+              </div>
+            </div>
+            <div class="activity-meta">
+              <span><i class="bi bi-person-circle"></i> Admin User</span>
+              <span><i class="bi bi-globe"></i> Web App</span>
+              <span><i class="bi bi-ip"></i> 192.168.1.100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Item 2 -->
+        <div class="timeline-item">
+          <div class="timeline-icon notification">
+            <i class="bi bi-bell-fill"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="activity-header">
+              <div class="activity-title">
+                <strong>Reminder Notification Sent</strong>
+                <span class="activity-badge notification">Notification</span>
+              </div>
+              <div class="activity-time">09:15 AM</div>
+            </div>
+            <div class="activity-details">
+              <div class="vehicle-info">
+                <i class="bi bi-truck"></i>
+                <span>DL 3C QR 5678</span>
+              </div>
+              <div class="message-preview">
+                <i class="bi bi-envelope"></i>
+                <span>PUC certificate expiring in 10 days reminder sent to owner</span>
+              </div>
+            </div>
+            <div class="activity-meta">
+              <span><i class="bi bi-person-circle"></i> System Auto</span>
+              <span><i class="bi bi-envelope"></i> SMS & Email</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Item 3 -->
+        <div class="timeline-item">
+          <div class="timeline-icon create">
+            <i class="bi bi-plus-circle"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="activity-header">
+              <div class="activity-title">
+                <strong>New Vehicle Added</strong>
+                <span class="activity-badge create">Create</span>
+              </div>
+              <div class="activity-time">08:45 AM</div>
+            </div>
+            <div class="activity-details">
+              <div class="vehicle-info">
+                <i class="bi bi-truck"></i>
+                <span>GJ 05 XY 7788</span>
+              </div>
+              <div class="additional-info">
+                <span>Owner: Rajesh Sharma</span>
+                <span>Type: Heavy Commercial Vehicle</span>
+              </div>
+            </div>
+            <div class="activity-meta">
+              <span><i class="bi bi-person-circle"></i> Fleet Manager</span>
+              <span><i class="bi bi-mobile"></i> Mobile App</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Yesterday Section -->
+    <div class="timeline-section">
+      <div class="timeline-date-header">
+        <div class="date-badge">
+          <i class="bi bi-calendar"></i>
+          <span>Yesterday</span>
+          <small>14 Jan 2025</small>
+        </div>
+      </div>
+      
+      <div class="timeline-items">
+        <!-- Activity Item 4 -->
+        <div class="timeline-item">
+          <div class="timeline-icon export">
+            <i class="bi bi-filetype-pdf"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="activity-header">
+              <div class="activity-title">
+                <strong>Report Exported</strong>
+                <span class="activity-badge export">Export</span>
+              </div>
+              <div class="activity-time">04:20 PM</div>
+            </div>
+            <div class="activity-details">
+              <div class="report-info">
+                <i class="bi bi-file-earmark-text"></i>
+                <span>Compliance Report - January 2025 (PDF)</span>
+              </div>
+            </div>
+            <div class="activity-meta">
+              <span><i class="bi bi-person-circle"></i> Admin User</span>
+              <span><i class="bi bi-download"></i> 2.4 MB</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Item 5 -->
+        <div class="timeline-item">
+          <div class="timeline-icon delete">
+            <i class="bi bi-trash3"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="activity-header">
+              <div class="activity-title">
+                <strong>Expired Document Removed</strong>
+                <span class="activity-badge delete">Delete</span>
+              </div>
+              <div class="activity-time">02:10 PM</div>
+            </div>
+            <div class="activity-details">
+              <div class="vehicle-info">
+                <i class="bi bi-truck"></i>
+                <span>KA 51 MN 9090</span>
+              </div>
+              <div class="change-details">
+                <div class="old-value">
+                  <i class="bi bi-file-earmark"></i>
+                  <span>PUC Certificate (Expired: 10 Jan 2025)</span>
+                </div>
+              </div>
+            </div>
+            <div class="activity-meta">
+              <span><i class="bi bi-person-circle"></i> System Auto</span>
+              <span><i class="bi bi-archive"></i> Archived</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Item 6 -->
+        <div class="timeline-item">
+          <div class="timeline-icon update">
+            <i class="bi bi-person-badge"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="activity-header">
+              <div class="activity-title">
+                <strong>Owner Contact Details Updated</strong>
+                <span class="activity-badge update">Update</span>
+              </div>
+              <div class="activity-time">11:30 AM</div>
+            </div>
+            <div class="activity-details">
+              <div class="vehicle-info">
+                <i class="bi bi-truck"></i>
+                <span>MH 12 AB 1234</span>
+              </div>
+              <div class="change-details">
+                <div class="old-value">
+                  <i class="bi bi-telephone"></i>
+                  <span>Old: 98765 43211</span>
+                </div>
+                <div class="new-value">
+                  <i class="bi bi-telephone-fill"></i>
+                  <span>New: 98765 43210</span>
+                </div>
+              </div>
+            </div>
+            <div class="activity-meta">
+              <span><i class="bi bi-person-circle"></i> Fleet Manager</span>
+              <span><i class="bi bi-check-circle"></i> Verified</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- This Week Section -->
+    <div class="timeline-section">
+      <div class="timeline-date-header">
+        <div class="date-badge">
+          <i class="bi bi-calendar-week"></i>
+          <span>This Week</span>
+          <small>12-13 Jan 2025</small>
+        </div>
+      </div>
+      
+      <div class="timeline-items">
+        <!-- Activity Item 7 -->
+        <div class="timeline-item">
+          <div class="timeline-icon login">
+            <i class="bi bi-box-arrow-in-right"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="activity-header">
+              <div class="activity-title">
+                <strong>User Login</strong>
+                <span class="activity-badge login">Login</span>
+              </div>
+              <div class="activity-time">13 Jan 2025 · 09:15 AM</div>
+            </div>
+            <div class="activity-details">
+              <div class="user-info">
+                <i class="bi bi-person-check"></i>
+                <span>Admin User logged in from Chrome on Windows</span>
+              </div>
+            </div>
+            <div class="activity-meta">
+              <span><i class="bi bi-ip"></i> 192.168.1.105</span>
+              <span><i class="bi bi-browser-chrome"></i> Chrome 120</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Item 8 -->
+        <div class="timeline-item">
+          <div class="timeline-icon notification">
+            <i class="bi bi-megaphone"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="activity-header">
+              <div class="activity-title">
+                <strong>Bulk Notifications Sent</strong>
+                <span class="activity-badge notification">Notification</span>
+              </div>
+              <div class="activity-time">12 Jan 2025 · 03:45 PM</div>
+            </div>
+            <div class="activity-details">
+              <div class="batch-info">
+                <i class="bi bi-envelope-paper"></i>
+                <span>Due date reminders sent to 12 vehicle owners</span>
+              </div>
+            </div>
+            <div class="activity-meta">
+              <span><i class="bi bi-person-circle"></i> System Auto</span>
+              <span><i class="bi bi-check-all"></i> 12 delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- List View (Hidden by default) -->
+  <div class="list-container" id="listView" style="display: none;">
+    <div class="list-header">
+      <div class="list-col">Date & Time</div>
+      <div class="list-col">Activity Type</div>
+      <div class="list-col">Description</div>
+      <div class="list-col">Vehicle</div>
+      <div class="list-col">User/Actor</div>
+      <div class="list-col">Details</div>
+    </div>
+    <div class="list-items">
+      <div class="list-item">
+        <div class="list-col">15 Jan 2025, 10:30 AM</div>
+        <div class="list-col"><span class="badge update">Update</span></div>
+        <div class="list-col">Insurance updated</div>
+        <div class="list-col">MH 12 AB 1234</div>
+        <div class="list-col">Admin User</div>
+        <div class="list-col"><button class="view-detail">View</button></div>
+      </div>
+      <div class="list-item">
+        <div class="list-col">15 Jan 2025, 09:15 AM</div>
+        <div class="list-col"><span class="badge notification">Notification</span></div>
+        <div class="list-col">Reminder sent</div>
+        <div class="list-col">DL 3C QR 5678</div>
+        <div class="list-col">System Auto</div>
+        <div class="list-col"><button class="view-detail">View</button></div>
+      </div>
+      <div class="list-item">
+        <div class="list-col">15 Jan 2025, 08:45 AM</div>
+        <div class="list-col"><span class="badge create">Create</span></div>
+        <div class="list-col">New vehicle added</div>
+        <div class="list-col">GJ 05 XY 7788</div>
+        <div class="list-col">Fleet Manager</div>
+        <div class="list-col"><button class="view-detail">View</button></div>
+      </div>
+      <div class="list-item">
+        <div class="list-col">14 Jan 2025, 04:20 PM</div>
+        <div class="list-col"><span class="badge export">Export</span></div>
+        <div class="list-col">Report exported</div>
+        <div class="list-col">All Vehicles</div>
+        <div class="list-col">Admin User</div>
+        <div class="list-col"><button class="view-detail">View</button></div>
+      </div>
+      <div class="list-item">
+        <div class="list-col">14 Jan 2025, 02:10 PM</div>
+        <div class="list-col"><span class="badge delete">Delete</span></div>
+        <div class="list-col">Expired document removed</div>
+        <div class="list-col">KA 51 MN 9090</div>
+        <div class="list-col">System Auto</div>
+        <div class="list-col"><button class="view-detail">View</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <button class="page-btn" disabled><i class="bi bi-chevron-left"></i></button>
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+    <button class="page-btn">4</button>
+    <span>...</span>
+    <button class="page-btn">12</button>
+    <button class="page-btn"><i class="bi bi-chevron-right"></i></button>
+  </div>
+</div>
+
+<style>
+.activity-history-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header */
+.activity-header {
+  background: white;
+  border-radius: 24px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.title-section i {
+  font-size: 2rem;
+  color: #2c7a6e;
+  background: #e3f5ec;
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+.title-section h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a4d5f;
+}
+
+.title-section p {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: #8aa3af;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #f9fbfd;
+  border: 1px solid #cbdde4;
+  border-radius: 40px;
+  padding: 0.5rem 1rem;
+  gap: 8px;
+}
+
+.search-box i {
+  color: #8aa3af;
+}
+
+.search-box input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 0.85rem;
+  width: 200px;
+}
+
+.filter-toggle-btn, .export-log-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-toggle-btn {
+  background: #f9fbfd;
+  border: 1px solid #cbdde4;
+  color: #5c6f7e;
+}
+
+.export-log-btn {
+  background: #2c7a6e;
+  color: white;
+}
+
+.filter-toggle-btn:hover, .export-log-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Activity Stats */
+.activity-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.stat-icon.blue {
+  background: #eef2ff;
+  color: #2c628f;
+}
+
+.stat-icon.green {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+.stat-icon.orange {
+  background: #fff3e0;
+  color: #e67e22;
+}
+
+.stat-icon.purple {
+  background: #f3e8ff;
+  color: #8e44ad;
+}
+
+.stat-info h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a4d5f;
+}
+
+.stat-info p {
+  margin: 0.2rem 0;
+  font-size: 0.8rem;
+  color: #5c6f7e;
+}
+
+.stat-info span {
+  font-size: 0.7rem;
+  color: #8aa3af;
+}
+
+/* Filter Section */
+.filter-section {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #5c6f7e;
+  text-transform: uppercase;
+}
+
+.filter-group select, .filter-group input {
+  padding: 0.6rem;
+  border: 1px solid #cbdde4;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+.date-range {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.date-range input {
+  flex: 1;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.apply-filter, .clear-filter {
+  padding: 0.6rem 1.2rem;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.apply-filter {
+  background: #2c7a6e;
+  color: white;
+}
+
+.clear-filter {
+  background: #f1f5f9;
+  color: #5c6f7e;
+}
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 60px;
+  width: fit-content;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.toggle-btn {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  background: transparent;
+  color: #5c6f7e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-btn.active {
+  background: #2c7a6e;
+  color: white;
+}
+
+/* Timeline Container */
+.timeline-container {
+  background: white;
+  border-radius: 24px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.timeline-section {
+  margin-bottom: 2rem;
+}
+
+.timeline-section:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-date-header {
+  margin-bottom: 1.5rem;
+}
+
+.date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.5rem 1rem;
+  background: #f9fbfd;
+  border-radius: 40px;
+  font-size: 0.85rem;
+}
+
+.date-badge.today {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+.date-badge i {
+  font-size: 1rem;
+}
+
+.date-badge span {
+  font-weight: 600;
+}
+
+.date-badge small {
+  color: #8aa3af;
+  font-size: 0.7rem;
+}
+
+.timeline-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 40px;
+  bottom: -20px;
+  width: 2px;
+  background: #e2edf2;
+}
+
+.timeline-item:last-child::before {
+  display: none;
+}
+
+.timeline-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.timeline-icon.update {
+  background: #eef2ff;
+  color: #2c628f;
+}
+
+.timeline-icon.notification {
+  background: #fff3e0;
+  color: #e67e22;
+}
+
+.timeline-icon.create {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+.timeline-icon.export {
+  background: #fee9e6;
+  color: #bc5a3c;
+}
+
+.timeline-icon.delete {
+  background: #ffe6e5;
+  color: #e74c3c;
+}
+
+.timeline-icon.login {
+  background: #e0f2fe;
+  color: #3498db;
+}
+
+.timeline-content {
+  flex: 1;
+  background: #f9fbfd;
+  border-radius: 16px;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.timeline-content:hover {
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.activity-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.activity-title strong {
+  font-size: 0.95rem;
+  color: #1a4d5f;
+}
+
+.activity-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.activity-badge.update {
+  background: #eef2ff;
+  color: #2c628f;
+}
+
+.activity-badge.notification {
+  background: #fff3e0;
+  color: #e67e22;
+}
+
+.activity-badge.create {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+.activity-badge.export {
+  background: #fee9e6;
+  color: #bc5a3c;
+}
+
+.activity-badge.delete {
+  background: #ffe6e5;
+  color: #e74c3c;
+}
+
+.activity-badge.login {
+  background: #e0f2fe;
+  color: #3498db;
+}
+
+.activity-time {
+  font-size: 0.7rem;
+  color: #8aa3af;
+}
+
+.activity-details {
+  margin-bottom: 0.75rem;
+}
+
+.vehicle-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+}
+
+.change-details {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.old-value, .new-value {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  background: white;
+  border-radius: 8px;
+}
+
+.old-value {
+  color: #e74c3c;
+}
+
+.new-value {
+  color: #1f7840;
+}
+
+.message-preview, .report-info, .user-info, .batch-info, .additional-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #5c6f7e;
+}
+
+.additional-info {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 0.5rem;
+}
+
+.activity-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e2edf2;
+  font-size: 0.7rem;
+  color: #8aa3af;
+}
+
+.activity-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* List View */
+.list-container {
+  background: white;
+  border-radius: 24px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  overflow-x: auto;
+}
+
+.list-header {
+  display: grid;
+  grid-template-columns: 150px 100px 1fr 120px 130px 80px;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9fbfd;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #1a4d5f;
+  margin-bottom: 0.5rem;
+}
+
+.list-item {
+  display: grid;
+  grid-template-columns: 150px 100px 1fr 120px 130px 80px;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #eef2f5;
+  align-items: center;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.list-item:hover {
+  background: #f9fbfd;
+}
+
+.list-col .badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.badge.update {
+  background: #eef2ff;
+  color: #2c628f;
+}
+
+.badge.notification {
+  background: #fff3e0;
+  color: #e67e22;
+}
+
+.badge.create {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+.badge.export {
+  background: #fee9e6;
+  color: #bc5a3c;
+}
+
+.badge.delete {
+  background: #ffe6e5;
+  color: #e74c3c;
+}
+
+.view-detail {
+  padding: 0.3rem 0.8rem;
+  background: none;
+  border: 1px solid #cbdde4;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  transition: all 0.2s;
+}
+
+.view-detail:hover {
+  background: #2c7a6e;
+  color: white;
+  border-color: #2c7a6e;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.page-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #cbdde4;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+
+.page-btn.active {
+  background: #2c7a6e;
+  color: white;
+  border-color: #2c7a6e;
+}
+
+.page-btn:hover:not(.active) {
+  background: #f1f5f9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .activity-history-dashboard {
+    padding: 1rem;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+  }
+  
+  .search-box {
+    width: 100%;
+  }
+  
+  .search-box input {
+    width: 100%;
+  }
+  
+  .filter-toggle-btn, .export-log-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .list-header, .list-item {
+    grid-template-columns: 120px 80px 1fr;
+    gap: 0.5rem;
+  }
+  
+  .list-header .list-col:nth-child(4),
+  .list-header .list-col:nth-child(5),
+  .list-header .list-col:nth-child(6),
+  .list-item .list-col:nth-child(4),
+  .list-item .list-col:nth-child(5),
+  .list-item .list-col:nth-child(6) {
+    display: none;
+  }
+  
+  .timeline-item {
+    flex-direction: column;
+    padding-left: 0;
+  }
+  
+  .timeline-item::before {
+    display: none;
+  }
+  
+  .timeline-icon {
+    align-self: flex-start;
+  }
+  
+  .change-details {
+    flex-direction: column;
+  }
+}
+</style>
+
+<script>
+// Toggle filter section
+document.querySelector('.filter-toggle-btn').addEventListener('click', function() {
+  const filterSection = document.getElementById('filterSection');
+  if (filterSection.style.display === 'none') {
+    filterSection.style.display = 'block';
+  } else {
+    filterSection.style.display = 'none';
+  }
+});
+
+// View toggle functionality
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const view = this.dataset.view;
+    
+    // Update active state
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    
+    // Show/hide views
+    if (view === 'timeline') {
+      document.getElementById('timelineView').style.display = 'block';
+      document.getElementById('listView').style.display = 'none';
+    } else {
+      document.getElementById('timelineView').style.display = 'none';
+      document.getElementById('listView').style.display = 'block';
+    }
+  });
+});
+
+// Apply filters
+document.querySelector('.apply-filter').addEventListener('click', function() {
+  const activityType = document.getElementById('activityType').value;
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  const userFilter = document.getElementById('userFilter').value;
+  const vehicleFilter = document.getElementById('vehicleFilter').value;
+  
+  alert(`Filters Applied:\n\nActivity Type: ${activityType}\nDate Range: ${startDate || 'Any'} to ${endDate || 'Any'}\nUser: ${userFilter}\nVehicle: ${vehicleFilter}\n\nThis would filter the activity history based on these criteria.`);
+});
+
+// Clear filters
+document.querySelector('.clear-filter').addEventListener('click', function() {
+  document.getElementById('activityType').value = 'all';
+  document.getElementById('startDate').value = '';
+  document.getElementById('endDate').value = '';
+  document.getElementById('userFilter').value = 'all';
+  document.getElementById('vehicleFilter').value = 'all';
+  
+  alert('All filters have been cleared.');
+});
+
+// Export logs
+document.querySelector('.export-log-btn').addEventListener('click', function() {
+  alert('Exporting activity logs...\n\nThis would download the activity history as CSV/Excel/PDF format.');
+});
+
+// Search functionality
+document.querySelector('.search-box input').addEventListener('input', function(e) {
+  const searchTerm = e.target.value;
+  if (searchTerm.length > 2) {
+    alert(`Searching for: "${searchTerm}"\n\nThis would filter activities matching your search term.`);
+  }
+});
+
+// View detail buttons
+document.querySelectorAll('.view-detail').forEach(btn => {
+  btn.addEventListener('click', function() {
+    alert('Viewing activity details...\n\nThis would show detailed information about this specific activity.');
+  });
+});
+
+// Pagination
+document.querySelectorAll('.page-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    if (!this.disabled && this.textContent !== '...') {
+      alert(`Navigating to page ${this.textContent}\n\nThis would load the selected page of activity history.`);
+    }
+  });
+});
+</script>    
+    
+</main>
+ 
+{% endblock content %}

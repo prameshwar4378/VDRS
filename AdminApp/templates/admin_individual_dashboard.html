@@ -1,0 +1,1088 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Vehicle List{% endblock title %}
+
+{% block content %}
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1>Vehicle Dashboard</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active">Vehicle Dashboard</li>
+                    </ol>
+                </nav>
+            </div> 
+        </div>
+    </div>
+
+ 
+ <div class="vehicle-dashboard">
+  <!-- Back Navigation with Gradient -->
+  <div class="back-nav">
+    <a href="#" class="back-link">
+      <i class="bi bi-arrow-left-short"></i> Back to Fleet Overview
+    </a>
+  </div>
+
+  <!-- Hero Header Section -->
+  <div class="hero-section">
+    <div class="hero-left">
+      <div class="vehicle-avatar">
+        <div class="avatar-ring">
+          <i class="bi bi-truck-front"></i>
+        </div>
+      </div>
+      <div class="vehicle-info">
+        <span class="vehicle-tag">Active Vehicle</span>
+        <h1>MH 12 AB 1234</h1>
+        <div class="vehicle-meta">
+          <span><i class="bi bi-geo-alt"></i> Mumbai, MH</span>
+          <span><i class="bi bi-calendar3"></i> Registered: 2023</span>
+          <span><i class="bi bi-fuel-pump"></i> Diesel</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="status-indicator">
+        <span class="pulse-dot"></span>
+        <span>Operational</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Action Buttons - Modern Design -->
+  <div class="action-grid">
+    <button class="action-card update-action">
+      <div class="action-icon"><i class="bi bi-pencil-square"></i></div>
+      <div class="action-text">
+        <h4>Update Record</h4>
+        <p>Modify vehicle details</p>
+      </div>
+    </button>
+    <button class="action-card pull-action">
+      <div class="action-icon"><i class="bi bi-cloud-arrow-down"></i></div>
+      <div class="action-text">
+        <h4>Pull Data</h4>
+        <p>Sync latest information</p>
+      </div>
+    </button>
+    <button class="action-card notify-action">
+      <div class="action-icon"><i class="bi bi-bell-fill"></i></div>
+      <div class="action-text">
+        <h4>Send Notifications</h4>
+        <p>Alert owner/staff</p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Main Content - Two Column Layout -->
+  <div class="main-layout">
+    <!-- Left Column -->
+    <div class="left-column">
+      <!-- Vehicle Details Card - Modern -->
+      <div class="info-card vehicle-details">
+        <div class="card-head">
+          <div class="head-left">
+            <i class="bi bi-truck"></i>
+            <h3>Vehicle Specifications</h3>
+          </div>
+          <span class="badge premium">Premium Fleet</span>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Vehicle Number</label>
+            <value>MH 12 AB 1234</value>
+          </div>
+          <div class="info-item">
+            <label>Chassis Number</label>
+            <value>MH12AB1234CH56789</value>
+          </div>
+          <div class="info-item">
+            <label>Engine Number</label>
+            <value>ENG789012345</value>
+          </div>
+          <div class="info-item">
+            <label>Model</label>
+            <value>TATA LPT 3118</value>
+          </div>
+          <div class="info-item">
+            <label>Manufacturing Year</label>
+            <value>2023</value>
+          </div>
+          <div class="info-item">
+            <label>Fuel Type</label>
+            <value>Diesel</value>
+          </div>
+          <div class="info-item">
+            <label>Vehicle Type</label>
+            <value>Commercial Goods Carrier</value>
+          </div>
+          <div class="info-item">
+            <label>Color</label>
+            <value>Royal Blue</value>
+          </div>
+        </div>
+      </div>
+
+      <!-- Owner Details Card - Creative -->
+      <div class="info-card owner-details">
+        <div class="card-head">
+          <div class="head-left">
+            <i class="bi bi-person-circle"></i>
+            <h3>Owner Information</h3>
+          </div>
+          <i class="bi bi-star-fill verified"></i>
+        </div>
+        <div class="owner-profile">
+          <div class="owner-avatar">
+            <i class="bi bi-person-fill"></i>
+          </div>
+          <div class="owner-info">
+            <h4>Rajesh Kumar Sharma</h4>
+            <p>Primary Owner</p>
+          </div>
+        </div>
+        <div class="contact-details">
+          <div class="contact-row">
+            <i class="bi bi-telephone-fill"></i>
+            <div>
+              <span>Mobile Number</span>
+              <strong>+91 98765 43210</strong>
+            </div>
+          </div>
+          <div class="contact-row">
+            <i class="bi bi-envelope-fill"></i>
+            <div>
+              <span>Email Address</span>
+              <strong>rajesh.sharma@email.com</strong>
+            </div>
+          </div>
+          <div class="contact-row">
+            <i class="bi bi-geo-alt-fill"></i>
+            <div>
+              <span>Residential Address</span>
+              <strong>123, Transport Nagar, Mumbai - 400001</strong>
+            </div>
+          </div>
+          <div class="contact-row">
+            <i class="bi bi-calendar-check"></i>
+            <div>
+              <span>Ownership Since</span>
+              <strong>15 March 2023</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-column">
+      <!-- Due Dates Dashboard - Visual Cards -->
+      <div class="info-card due-dashboard">
+        <div class="card-head">
+          <div class="head-left">
+            <i class="bi bi-calendar-week"></i>
+            <h3>Compliance Calendar</h3>
+          </div>
+          <span class="badge urgent">3 Pending</span>
+        </div>
+        <div class="due-grid">
+          <div class="due-card insurance">
+            <div class="due-icon"><i class="bi bi-file-earmark-text"></i></div>
+            <div class="due-details">
+              <div class="due-title">Insurance</div>
+              <div class="due-date">15 June 2025</div>
+              <div class="due-progress">
+                <div class="progress-bar" style="width: 85%"></div>
+              </div>
+              <div class="due-status warning">15 days remaining</div>
+            </div>
+          </div>
+          <div class="due-card puc expired">
+            <div class="due-icon"><i class="bi bi-cloud-sun"></i></div>
+            <div class="due-details">
+              <div class="due-title">PUC Certificate</div>
+              <div class="due-date">10 March 2025</div>
+              <div class="due-progress">
+                <div class="progress-bar expired" style="width: 100%"></div>
+              </div>
+              <div class="due-status critical">Expired</div>
+            </div>
+          </div>
+          <div class="due-card road-tax">
+            <div class="due-icon"><i class="bi bi-signpost-2"></i></div>
+            <div class="due-details">
+              <div class="due-title">Road Tax</div>
+              <div class="due-date">22 August 2025</div>
+              <div class="due-progress">
+                <div class="progress-bar" style="width: 45%"></div>
+              </div>
+              <div class="due-status good">3 months left</div>
+            </div>
+          </div>
+          <div class="due-card health-permit">
+            <div class="due-icon"><i class="bi bi-file-medical"></i></div>
+            <div class="due-details">
+              <div class="due-title">Health/Permit</div>
+              <div class="due-date">18 May 2025</div>
+              <div class="due-progress">
+                <div class="progress-bar warning" style="width: 75%"></div>
+              </div>
+              <div class="due-status warning">23 days left</div>
+            </div>
+          </div>
+          <div class="due-card fitness">
+            <div class="due-icon"><i class="bi bi-heart-pulse"></i></div>
+            <div class="due-details">
+              <div class="due-title">Fitness Certificate</div>
+              <div class="due-date">01 September 2025</div>
+              <div class="due-progress">
+                <div class="progress-bar" style="width: 35%"></div>
+              </div>
+              <div class="due-status good">4 months left</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Info: Last Service & Fuel Efficiency -->
+       
+    </div>
+  </div>
+
+  <!-- Update History Timeline - Enhanced Design -->
+  <div class="timeline-section">
+    <div class="timeline-header">
+      <div class="header-left">
+        <i class="bi bi-clock-history"></i>
+        <h3>Update History Timeline</h3>
+      </div>
+      <button class="view-all">View All <i class="bi bi-arrow-right"></i></button>
+    </div>
+    <div class="timeline-wrapper">
+      <div class="timeline-item">
+        <div class="timeline-icon update">
+          <i class="bi bi-pencil"></i>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-date">15 Jan 2025 · 10:30 AM</div>
+          <div class="timeline-title">Insurance Policy Updated</div>
+          <div class="change-log">
+            <div class="old-value">
+              <i class="bi bi-arrow-left-right"></i>
+              <span>From: <strong>15 June 2024</strong></span>
+            </div>
+            <div class="new-value">
+              <i class="bi bi-arrow-right-short"></i>
+              <span>To: <strong>15 June 2025</strong></span>
+            </div>
+          </div>
+          <div class="updated-by">
+            <i class="bi bi-person-circle"></i> Updated by: Admin User
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-icon update">
+          <i class="bi bi-person-badge"></i>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-date">10 Dec 2024 · 02:15 PM</div>
+          <div class="timeline-title">Owner Contact Details Modified</div>
+          <div class="change-log">
+            <div class="old-value">
+              <i class="bi bi-arrow-left-right"></i>
+              <span>From: <strong>+91 98765 43211</strong></span>
+            </div>
+            <div class="new-value">
+              <i class="bi bi-arrow-right-short"></i>
+              <span>To: <strong>+91 98765 43210</strong></span>
+            </div>
+          </div>
+          <div class="updated-by">
+            <i class="bi bi-person-circle"></i> Updated by: Fleet Manager
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-icon update">
+          <i class="bi bi-cloud-check"></i>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-date">05 Nov 2024 · 09:45 AM</div>
+          <div class="timeline-title">PUC Certificate Renewal</div>
+          <div class="change-log">
+            <div class="old-value">
+              <i class="bi bi-arrow-left-right"></i>
+              <span>From: <strong>10 Sept 2024</strong></span>
+            </div>
+            <div class="new-value">
+              <i class="bi bi-arrow-right-short"></i>
+              <span>To: <strong>10 March 2025</strong></span>
+            </div>
+          </div>
+          <div class="updated-by">
+            <i class="bi bi-robot"></i> Updated by: System Auto-Renewal
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-icon update">
+          <i class="bi bi-cash-stack"></i>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-date">20 Oct 2024 · 11:20 AM</div>
+          <div class="timeline-title">Road Tax Payment Processed</div>
+          <div class="change-log">
+            <div class="old-value">
+              <i class="bi bi-arrow-left-right"></i>
+              <span>From: <strong>22 Aug 2024</strong></span>
+            </div>
+            <div class="new-value">
+              <i class="bi bi-arrow-right-short"></i>
+              <span>To: <strong>22 Aug 2025</strong></span>
+            </div>
+          </div>
+          <div class="updated-by">
+            <i class="bi bi-person-circle"></i> Updated by: Finance Department
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-icon update">
+          <i class="bi bi-shield-check"></i>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-date">15 Sept 2024 · 03:00 PM</div>
+          <div class="timeline-title">Fitness Certificate Extension</div>
+          <div class="change-log">
+            <div class="old-value">
+              <i class="bi bi-arrow-left-right"></i>
+              <span>From: <strong>01 Sept 2024</strong></span>
+            </div>
+            <div class="new-value">
+              <i class="bi bi-arrow-right-short"></i>
+              <span>To: <strong>01 Sept 2025</strong></span>
+            </div>
+          </div>
+          <div class="updated-by">
+            <i class="bi bi-building"></i> Updated by: RTO Officer
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.vehicle-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Back Navigation */
+.back-nav {
+  margin-bottom: 2rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #1e5f6e;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border-radius: 40px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.back-link:hover {
+  background: #2c7a6e;
+  color: white;
+  transform: translateX(-5px);
+  box-shadow: 0 4px 12px rgba(44,122,110,0.2);
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fbfd 100%);
+  border-radius: 32px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  border: 1px solid rgba(44,122,110,0.1);
+}
+
+.hero-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.vehicle-avatar {
+  position: relative;
+}
+
+.avatar-ring {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #2c7a6e, #1e5f6e);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(44,122,110,0.3);
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(44,122,110,0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(44,122,110,0); }
+  100% { box-shadow: 0 0 0 0 rgba(44,122,110,0); }
+}
+
+.avatar-ring i {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.vehicle-tag {
+  display: inline-block;
+  background: #e3f5ec;
+  color: #1f7840;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  margin-bottom: 0.5rem;
+}
+
+.vehicle-info h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a4d5f;
+  margin: 0.25rem 0;
+}
+
+.vehicle-meta {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.vehicle-meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #5c6f7e;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #e3f5ec;
+  padding: 0.5rem 1.2rem;
+  border-radius: 40px;
+  font-weight: 600;
+  color: #1f7840;
+}
+
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  background: #1f7840;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(2); }
+}
+
+/* Action Grid */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.action-card {
+  background: white;
+  border: none;
+  border-radius: 20px;
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.action-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+
+.action-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.update-action .action-icon {
+  background: #eef2ff;
+  color: #2c628f;
+}
+
+.pull-action .action-icon {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+.notify-action .action-icon {
+  background: #fee9e6;
+  color: #bc5a3c;
+}
+
+.action-text {
+  text-align: left;
+}
+
+.action-text h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a4d5f;
+}
+
+.action-text p {
+  margin: 0.2rem 0 0;
+  font-size: 0.75rem;
+  color: #8aa3af;
+}
+
+/* Main Layout */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Info Cards */
+.info-card {
+  background: white;
+  border-radius: 24px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #eef2f5;
+}
+
+.head-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.head-left i {
+  font-size: 1.3rem;
+  color: #2c7a6e;
+}
+
+.head-left h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a4d5f;
+}
+
+.badge {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.badge.premium {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+}
+
+.badge.urgent {
+  background: #fee9e6;
+  color: #bc5a3c;
+}
+
+.verified {
+  color: #fbbf24;
+  font-size: 1rem;
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.info-item label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #8aa3af;
+  text-transform: uppercase;
+}
+
+.info-item value {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #1f3e48;
+}
+
+/* Owner Profile */
+.owner-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-radius: 20px;
+}
+
+.owner-avatar {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #2c7a6e, #1e5f6e);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.owner-avatar i {
+  font-size: 2rem;
+  color: white;
+}
+
+.owner-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a4d5f;
+}
+
+.owner-info p {
+  margin: 0.2rem 0 0;
+  font-size: 0.75rem;
+  color: #8aa3af;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.contact-row i {
+  font-size: 1.1rem;
+  color: #2c7a6e;
+  margin-top: 0.2rem;
+}
+
+.contact-row div {
+  flex: 1;
+}
+
+.contact-row span {
+  display: block;
+  font-size: 0.7rem;
+  color: #8aa3af;
+  margin-bottom: 0.2rem;
+}
+
+.contact-row strong {
+  font-size: 0.85rem;
+  color: #1f3e48;
+}
+
+/* Due Grid */
+.due-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.due-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9fbfd;
+  border-radius: 16px;
+  transition: all 0.2s;
+  border-left: 4px solid;
+}
+
+.due-card.insurance { border-left-color: #2c628f; }
+.due-card.puc { border-left-color: #e67e22; }
+.due-card.road-tax { border-left-color: #1f7840; }
+.due-card.health-permit { border-left-color: #8e44ad; }
+.due-card.fitness { border-left-color: #3498db; }
+
+.due-icon {
+  width: 45px;
+  height: 45px;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #2c7a6e;
+}
+
+.due-details {
+  flex: 1;
+}
+
+.due-title {
+  font-weight: 600;
+  color: #1a4d5f;
+  font-size: 0.85rem;
+}
+
+.due-date {
+  font-size: 0.7rem;
+  color: #8aa3af;
+  margin: 0.2rem 0;
+}
+
+.due-progress {
+  width: 100%;
+  height: 4px;
+  background: #e2edf2;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #2c7a6e;
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+.progress-bar.expired { background: #bc5a3c; }
+.progress-bar.warning { background: #e67e22; }
+
+.due-status {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.due-status.warning {
+  background: #fff3e0;
+  color: #e67e22;
+}
+
+.due-status.critical {
+  background: #fee9e6;
+  color: #bc5a3c;
+}
+
+.due-status.good {
+  background: #e3f5ec;
+  color: #1f7840;
+}
+
+/* Quick Stats */
+.stats-flex {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.stat-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1rem;
+  background: #f9fbfd;
+  border-radius: 16px;
+}
+
+.stat-block i {
+  font-size: 1.5rem;
+  color: #2c7a6e;
+}
+
+.stat-block div {
+  flex: 1;
+}
+
+.stat-block span {
+  display: block;
+  font-size: 0.7rem;
+  color: #8aa3af;
+  margin-bottom: 0.2rem;
+}
+
+.stat-block strong {
+  font-size: 0.9rem;
+  color: #1a4d5f;
+}
+
+/* Timeline Section */
+.timeline-section {
+  background: white;
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #eef2f5;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-left i {
+  font-size: 1.3rem;
+  color: #2c7a6e;
+}
+
+.header-left h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a4d5f;
+}
+
+.view-all {
+  background: none;
+  border: none;
+  color: #2c7a6e;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.view-all:hover {
+  color: #1e5f6e;
+  gap: 8px;
+}
+
+.timeline-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+}
+
+.timeline-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e3f5ec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1f7840;
+  flex-shrink: 0;
+}
+
+.timeline-card {
+  flex: 1;
+  background: #f9fbfd;
+  padding: 1rem;
+  border-radius: 16px;
+  transition: all 0.2s;
+}
+
+.timeline-card:hover {
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.timeline-date {
+  font-size: 0.7rem;
+  color: #8aa3af;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-title {
+  font-weight: 700;
+  color: #1a4d5f;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.change-log {
+  display: flex;
+  gap: 1rem;
+  margin: 0.75rem 0;
+  flex-wrap: wrap;
+}
+
+.old-value, .new-value {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  background: white;
+  border-radius: 8px;
+}
+
+.old-value i, .new-value i {
+  font-size: 0.8rem;
+}
+
+.old-value {
+  color: #bc5a3c;
+}
+
+.new-value {
+  color: #1f7840;
+}
+
+.updated-by {
+  font-size: 0.7rem;
+  color: #8aa3af;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-left {
+    flex-wrap: wrap;
+  }
+  
+  .vehicle-meta {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .vehicle-dashboard {
+    padding: 1rem;
+  }
+  
+  .hero-section {
+    padding: 1.5rem;
+  }
+  
+  .avatar-ring {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .avatar-ring i {
+    font-size: 1.8rem;
+  }
+  
+  .vehicle-info h1 {
+    font-size: 1.5rem;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-flex {
+    grid-template-columns: 1fr;
+  }
+  
+  .change-log {
+    flex-direction: column;
+  }
+}
+</style>
+</main>
+ 
+{% endblock content %}

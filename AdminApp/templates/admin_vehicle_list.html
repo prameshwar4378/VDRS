@@ -1,0 +1,1344 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Vehicle List{% endblock title %}
+
+{% block content %}
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1>Vehicle List</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active">Vehicle List</li>
+                    </ol>
+                </nav>
+            </div> 
+        </div>
+    </div>
+
+ 
+<style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f4f7fc 0%, #eef2f5 100%);
+      font-family: 'Inter', sans-serif;
+      padding: 0;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    /* main card container - full width on all devices */
+    .dashboard-wrapper {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* header section - full width with proper spacing */
+    .header-section {
+      margin-bottom: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 2px dashed rgba(0, 90, 120, 0.2);
+      padding: 1rem 1rem 0.75rem 1rem;
+      background: linear-gradient(145deg, #f4f7fc 0%, #eef2f5 100%);
+    }
+
+    .stat-badge {
+      background: white;
+      border-radius: 60px;
+      padding: 0.5rem 1.4rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.05);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #1e5f6e;
+      backdrop-filter: blur(2px);
+    }
+
+    .stat-badge i {
+      margin-right: 8px;
+      color: #2c9b8a;
+    }
+
+    /* table container - full width, no border radius on mobile */
+    .table-responsive-custom {
+      background: white;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0,0,0,0.02);
+      overflow-x: auto;
+      overflow-y: visible;
+      transition: all 0.2s ease;
+      width: 100%;
+      border-radius: 0;
+    }
+
+    /* custom scrollbar for modern look */
+    .table-responsive-custom::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
+
+    .table-responsive-custom::-webkit-scrollbar-track {
+      background: #e9ecef;
+      border-radius: 10px;
+    }
+
+    .table-responsive-custom::-webkit-scrollbar-thumb {
+      background: #b3cfd0;
+      border-radius: 10px;
+    }
+
+    .table-responsive-custom::-webkit-scrollbar-thumb:hover {
+      background: #7faaad;
+    }
+
+    .vehicle-table {
+      width: 100%;
+      min-width: 1000px;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.9rem;
+    }
+
+    .vehicle-table thead tr {
+      background: #f9fbfd;
+      border-bottom: 1px solid #e2edf2;
+    }
+
+    .vehicle-table th {
+      padding: 1.1rem 1rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #2a5f6e;
+      background: #f9fbfd;
+      border-bottom: 1.5px solid #dee9ef;
+      white-space: nowrap;
+    }
+
+    .vehicle-table td {
+      padding: 1rem 1rem;
+      vertical-align: middle;
+      border-bottom: 1px solid #edf3f6;
+      color: #1f3e48;
+      font-weight: 500;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    /* Allow action buttons to wrap if needed on extremely small screens, but keep text visible */
+    .vehicle-table td:last-child {
+      white-space: normal;
+    }
+
+    .vehicle-table tbody tr:hover {
+      background: #f6fafd;
+      cursor: default;
+    }
+
+    /* date styling - compact and clean */
+    .date-cell {
+      font-family: 'Inter', monospace;
+      font-weight: 500;
+      background: #f0f6f9;
+      display: inline-block;
+      padding: 0.25rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #1a6d5e;
+      white-space: nowrap;
+    }
+
+    /* action buttons group - responsive, text never wraps inside buttons */
+    .action-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-icon {
+      border-radius: 40px;
+      padding: 0.4rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      border: none;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .btn-read {
+      background-color: #eef2ff;
+      color: #2c628f;
+    }
+    .btn-read:hover {
+      background-color: #d9e4ff;
+      color: #154e73;
+      transform: translateY(-1px);
+    }
+
+    .btn-update {
+      background-color: #e3f5ec;
+      color: #1f7840;
+    }
+    .btn-update:hover {
+      background-color: #ceecdf;
+      color: #0b5531;
+      transform: translateY(-1px);
+    }
+
+    .btn-delete {
+      background-color: #fee9e6;
+      color: #bc5a3c;
+    }
+    .btn-delete:hover {
+      background-color: #fdd9d2;
+      color: #9a3e24;
+      transform: translateY(-1px);
+    }
+
+    /* toast custom */
+    .toast-notify {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 1090;
+      min-width: 260px;
+      background: #1f2f38e6;
+      backdrop-filter: blur(8px);
+      color: white;
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    /* vehicle number badge - compact */
+    .vehicle-number {
+      font-weight: 700;
+      color: #165a4b;
+      background: #e2f0ed;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    /* Mobile First - Full screen, no margins/padding */
+    @media (max-width: 768px) {
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      
+      .dashboard-wrapper {
+        padding: 0;
+        margin: 0;
+      }
+      
+      .header-section {
+        padding: 0.75rem 0.75rem 0.5rem 0.75rem;
+        margin-bottom: 0;
+      }
+      
+      .stat-badge {
+        font-size: 0.75rem;
+        padding: 0.4rem 1rem;
+        width: auto;
+      }
+      
+      .table-responsive-custom {
+        border-radius: 0;
+        box-shadow: none;
+      }
+      
+      .vehicle-table {
+        min-width: 900px;
+      }
+      
+      .vehicle-table th {
+        font-size: 0.7rem;
+        padding: 0.8rem 0.6rem;
+        white-space: nowrap;
+      }
+      
+      .vehicle-table td {
+        padding: 0.7rem 0.6rem;
+      }
+      
+      .btn-icon {
+        padding: 0.3rem 0.7rem;
+        font-size: 0.65rem;
+      }
+      
+      .btn-icon i {
+        font-size: 0.7rem;
+      }
+      
+      .date-cell {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+        white-space: nowrap;
+      }
+      
+      .vehicle-number {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        white-space: nowrap;
+      }
+      
+      .action-group {
+        gap: 5px;
+      }
+      
+      footer {
+        padding: 1rem;
+        margin-top: 1rem;
+        font-size: 0.7rem;
+      }
+    }
+
+    /* For very small devices, ensure no horizontal scroll on body */
+    @media (max-width: 480px) {
+      .stat-badge {
+        font-size: 0.7rem;
+        padding: 0.35rem 0.8rem;
+      }
+      
+      .btn-icon {
+        padding: 0.25rem 0.6rem;
+        font-size: 0.6rem;
+      }
+      
+      .date-cell {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.45rem;
+      }
+      
+      .vehicle-table th {
+        font-size: 0.65rem;
+        padding: 0.6rem 0.5rem;
+      }
+      
+      .vehicle-table td {
+        padding: 0.6rem 0.5rem;
+      }
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding: 0 1rem 1rem 1rem;
+      font-size: 0.75rem;
+      color: #8aa3af;
+    }
+    
+    /* Modal responsive adjustments */
+    @media (max-width: 600px) {
+      .update-modal-overlay > div {
+        width: 95% !important;
+        padding: 1rem !important;
+        margin: 0.5rem !important;
+      }
+      
+      .update-modal-overlay div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+      
+      .update-modal-overlay h3 {
+        font-size: 1.2rem !important;
+      }
+      
+      .update-modal-overlay input {
+        font-size: 0.9rem !important;
+      }
+    }
+  </style>
+<div class="row" style="margin: 0; padding: 0; width: 100%;">
+
+<div class="dashboard-wrapper" style="width: 100%; margin: 0; padding: 0;">
+  <!-- header section - TITLE REMOVED, only stat badge remains -->
+<div class="header-section">
+  <div class="header-left">
+    <div class="stat-badge">
+      <i class="bi bi-calendar-check"></i> <span id="vehicleCount">5</span> active vehicles · <i class="bi bi-shield-check"></i> compliance ready
+    </div>
+  </div>
+  <div class="header-actions">
+    <!-- Filter Button with Dropdown -->
+    <div class="dropdown-wrapper">
+      <button class="action-btn filter-btn" id="filterBtn">
+        <i class="bi bi-funnel"></i> Filter
+      </button>
+      <div class="filter-dropdown" id="filterDropdown">
+        <div class="filter-header">
+          <i class="bi bi-sliders2"></i> Filter by
+        </div>
+        <div class="filter-option">
+          <label>Vehicle Number</label>
+          <input type="text" id="filterVehicle" placeholder="Enter vehicle number" class="filter-input">
+        </div>
+        <div class="filter-option">
+          <label>Insurance Status</label>
+          <select id="filterInsurance" class="filter-select">
+            <option value="">All</option>
+            <option value="active">Active</option>
+            <option value="expiring">Expiring Soon</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
+        <div class="filter-option">
+          <label>PUC Status</label>
+          <select id="filterPUC" class="filter-select">
+            <option value="">All</option>
+            <option value="active">Active</option>
+            <option value="expiring">Expiring Soon</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button class="filter-clear" id="clearFilter">Clear</button>
+          <button class="filter-apply" id="applyFilter">Apply</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export Button with Dropdown -->
+    <div class="dropdown-wrapper">
+      <button class="action-btn export-btn" id="exportBtn">
+        <i class="bi bi-download"></i> Export
+      </button>
+      <div class="export-dropdown" id="exportDropdown">
+        <button class="export-option" id="exportCSV">
+          <i class="bi bi-filetype-csv"></i> Export as CSV
+        </button>
+        <button class="export-option" id="exportPDF">
+          <i class="bi bi-filetype-pdf"></i> Export as PDF
+        </button>
+        <button class="export-option" id="exportExcel">
+          <i class="bi bi-filetype-xlsx"></i> Export as Excel
+        </button>
+      </div>
+    </div>
+
+    <!-- Add Vehicle Button -->
+    <button class="action-btn add-btn" id="addVehicleBtn">
+      <i class="bi bi-plus-circle"></i> Add Vehicle
+    </button>
+  </div>
+</div>
+
+<style>
+.header-section {
+  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 2px dashed rgba(0, 90, 120, 0.2);
+  padding: 1rem 1rem 0.75rem 1rem;
+  background: linear-gradient(145deg, #f4f7fc 0%, #eef2f5 100%);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.filter-btn {
+  background: white;
+  color: #2c628f;
+  border: 1px solid #cbdde4;
+}
+
+.filter-btn:hover {
+  background: #eef2ff;
+  border-color: #2c628f;
+}
+
+.export-btn {
+  background: white;
+  color: #1f7840;
+  border: 1px solid #cbdde4;
+}
+
+.export-btn:hover {
+  background: #e3f5ec;
+  border-color: #1f7840;
+}
+
+.add-btn {
+  background: linear-gradient(135deg, #2c7a6e, #1e5f6e);
+  color: white;
+  border: none;
+}
+
+.add-btn:hover {
+  background: linear-gradient(135deg, #236b5f, #16505e);
+  transform: translateY(-1px);
+}
+
+/* Dropdown Styles */
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-dropdown, .export-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  min-width: 280px;
+  z-index: 1000;
+  display: none;
+  overflow: hidden;
+  animation: fadeIn 0.2s ease;
+}
+
+.filter-dropdown.show, .export-dropdown.show {
+  display: block;
+}
+
+.filter-header {
+  padding: 1rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2edf2;
+  font-weight: 600;
+  color: #1e5f6e;
+}
+
+.filter-option {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.filter-option label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #5c6f7e;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.filter-input, .filter-select {
+  width: 100%;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #cbdde4;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.filter-input:focus, .filter-select:focus {
+  outline: none;
+  border-color: #2c7a6e;
+  box-shadow: 0 0 0 2px rgba(44, 122, 110, 0.1);
+}
+
+.filter-actions {
+  padding: 1rem;
+  display: flex;
+  gap: 10px;
+  background: #f8fafc;
+}
+
+.filter-clear, .filter-apply {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.filter-clear {
+  background: #f1f5f9;
+  color: #5c6f7e;
+}
+
+.filter-clear:hover {
+  background: #e2e8f0;
+}
+
+.filter-apply {
+  background: #2c7a6e;
+  color: white;
+}
+
+.filter-apply:hover {
+  background: #1e5f6e;
+}
+
+.export-option {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  text-align: left;
+  background: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+  color: #1f3e48;
+}
+
+.export-option:hover {
+  background: #f6fafd;
+}
+
+.export-option i {
+  font-size: 1.1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .header-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .header-left {
+    justify-content: space-between;
+  }
+  
+  .header-actions {
+    justify-content: stretch;
+  }
+  
+  .action-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .dropdown-wrapper {
+    flex: 1;
+  }
+  
+  .filter-dropdown, .export-dropdown {
+    position: fixed;
+    top: auto;
+    bottom: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 320px;
+    right: auto;
+  }
+}
+</style>
+
+<script>
+// Add JavaScript for the buttons functionality
+
+// Vehicle count update function
+function updateVehicleCount() {
+  const count = vehiclesData.length;
+  document.getElementById('vehicleCount').textContent = count;
+}
+
+// Call this after any vehicle add/delete
+// Add this to your existing renderTable function
+const originalRenderTable = renderTable;
+renderTable = function() {
+  originalRenderTable();
+  updateVehicleCount();
+};
+
+// Toggle Dropdowns
+document.getElementById('filterBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const filterDropdown = document.getElementById('filterDropdown');
+  const exportDropdown = document.getElementById('exportDropdown');
+  filterDropdown.classList.toggle('show');
+  exportDropdown.classList.remove('show');
+});
+
+document.getElementById('exportBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const exportDropdown = document.getElementById('exportDropdown');
+  const filterDropdown = document.getElementById('filterDropdown');
+  exportDropdown.classList.toggle('show');
+  filterDropdown.classList.remove('show');
+});
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.dropdown-wrapper')) {
+    document.getElementById('filterDropdown').classList.remove('show');
+    document.getElementById('exportDropdown').classList.remove('show');
+  }
+});
+
+// Filter functionality
+document.getElementById('applyFilter').addEventListener('click', () => {
+  const vehicleFilter = document.getElementById('filterVehicle').value.toLowerCase();
+  const insuranceFilter = document.getElementById('filterInsurance').value;
+  const pucFilter = document.getElementById('filterPUC').value;
+  
+  const filteredData = vehiclesData.filter(vehicle => {
+    // Vehicle number filter
+    if (vehicleFilter && !vehicle.vehicleNumber.toLowerCase().includes(vehicleFilter)) {
+      return false;
+    }
+    
+    // Insurance status filter
+    if (insuranceFilter) {
+      const insDate = new Date(vehicle.insuranceDate);
+      const today = new Date();
+      const daysDiff = (insDate - today) / (1000 * 3600 * 24);
+      
+      if (insuranceFilter === 'expired' && daysDiff >= 0) return false;
+      if (insuranceFilter === 'expiring' && (daysDiff > 30 || daysDiff < 0)) return false;
+      if (insuranceFilter === 'active' && daysDiff < 0) return false;
+    }
+    
+    // PUC status filter
+    if (pucFilter) {
+      const pucDate = new Date(vehicle.pucDate);
+      const today = new Date();
+      const daysDiff = (pucDate - today) / (1000 * 3600 * 24);
+      
+      if (pucFilter === 'expired' && daysDiff >= 0) return false;
+      if (pucFilter === 'expiring' && (daysDiff > 30 || daysDiff < 0)) return false;
+      if (pucFilter === 'active' && daysDiff < 0) return false;
+    }
+    
+    return true;
+  });
+  
+  // Update table with filtered data
+  renderFilteredTable(filteredData);
+  document.getElementById('filterDropdown').classList.remove('show');
+  showToast(`Showing ${filteredData.length} of ${vehiclesData.length} vehicles`, false);
+});
+
+document.getElementById('clearFilter').addEventListener('click', () => {
+  document.getElementById('filterVehicle').value = '';
+  document.getElementById('filterInsurance').value = '';
+  document.getElementById('filterPUC').value = '';
+  renderTable(); // Reset to original table
+  document.getElementById('filterDropdown').classList.remove('show');
+  showToast('Filters cleared', false);
+});
+
+// Function to render filtered table
+function renderFilteredTable(filteredData) {
+  const tbody = document.getElementById('vehicleTableBody');
+  if (!tbody) return;
+  
+  tbody.innerHTML = '';
+  filteredData.forEach(vehicle => {
+    // Same row creation logic as original renderTable
+    const row = createVehicleRow(vehicle);
+    tbody.appendChild(row);
+  });
+}
+
+// Helper function to create vehicle row (extract from your existing code)
+function createVehicleRow(vehicle) {
+  const row = document.createElement('tr');
+  
+  const vehCell = document.createElement('td');
+  vehCell.innerHTML = `<span class="vehicle-number"><i class="bi bi-tag me-1"></i>${vehicle.vehicleNumber}</span>`;
+  
+  const insCell = document.createElement('td');
+  insCell.innerHTML = `<span class="date-cell"><i class="bi bi-calendar3 me-1"></i>${formatDate(vehicle.insuranceDate)}</span>`;
+  
+  const pucCell = document.createElement('td');
+  pucCell.innerHTML = `<span class="date-cell"><i class="bi bi-calendar-check me-1"></i>${formatDate(vehicle.pucDate)}</span>`;
+  
+  const roadCell = document.createElement('td');
+  roadCell.innerHTML = `<span class="date-cell"><i class="bi bi-signpost-2 me-1"></i>${formatDate(vehicle.roadDate)}</span>`;
+  
+  const healthCell = document.createElement('td');
+  healthCell.innerHTML = `<span class="date-cell"><i class="bi bi-file-medical me-1"></i>${formatDate(vehicle.healthPermitDate)}</span>`;
+  
+  const fitnessCell = document.createElement('td');
+  fitnessCell.innerHTML = `<span class="date-cell"><i class="bi bi-heart-pulse me-1"></i>${formatDate(vehicle.fitnessDate)}</span>`;
+  
+  const actionCell = document.createElement('td');
+  const btnGroup = document.createElement('div');
+  btnGroup.className = 'action-group';
+  
+  const readBtn = document.createElement('button');
+  readBtn.className = 'btn-icon btn-read';
+  readBtn.innerHTML = '<i class="bi bi-eye-fill"></i> Read';
+  readBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showToast(`📋 ${vehicle.vehicleNumber} · Ins: ${formatDate(vehicle.insuranceDate)} | PUC: ${formatDate(vehicle.pucDate)} | Road: ${formatDate(vehicle.roadDate)} | Permit: ${formatDate(vehicle.healthPermitDate)} | Fitness: ${formatDate(vehicle.fitnessDate)}`, false);
+  });
+  
+  const updateBtn = document.createElement('button');
+  updateBtn.className = 'btn-icon btn-update';
+  updateBtn.innerHTML = '<i class="bi bi-pencil-square"></i> Update';
+  updateBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openUpdateModal(vehicle.id);
+  });
+  
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'btn-icon btn-delete';
+  deleteBtn.innerHTML = '<i class="bi bi-trash3"></i> Delete';
+  deleteBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (confirm(`⚠️ Permanently delete record for ${vehicle.vehicleNumber}?`)) {
+      const index = vehiclesData.findIndex(v => v.id === vehicle.id);
+      if (index !== -1) {
+        vehiclesData.splice(index, 1);
+        renderTable();
+        showToast(`🗑️ ${vehicle.vehicleNumber} removed.`, false);
+      }
+    }
+  });
+  
+  btnGroup.appendChild(readBtn);
+  btnGroup.appendChild(updateBtn);
+  btnGroup.appendChild(deleteBtn);
+  actionCell.appendChild(btnGroup);
+  
+  row.appendChild(vehCell);
+  row.appendChild(insCell);
+  row.appendChild(pucCell);
+  row.appendChild(roadCell);
+  row.appendChild(healthCell);
+  row.appendChild(fitnessCell);
+  row.appendChild(actionCell);
+  
+  return row;
+}
+
+// CSV Export
+document.getElementById('exportCSV').addEventListener('click', () => {
+  const headers = ['Vehicle Number', 'Insurance Date', 'PUC Date', 'Road Date', 'Health/Permit Date', 'Fitness Date'];
+  const rows = vehiclesData.map(v => [
+    v.vehicleNumber,
+    formatDate(v.insuranceDate),
+    formatDate(v.pucDate),
+    formatDate(v.roadDate),
+    formatDate(v.healthPermitDate),
+    formatDate(v.fitnessDate)
+  ]);
+  
+  const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'vehicle_data.csv');
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast('CSV exported successfully!', false);
+});
+
+// PDF Export (using window.print for simplicity)
+document.getElementById('exportPDF').addEventListener('click', () => {
+  const printContent = document.querySelector('.table-responsive-custom').cloneNode(true);
+  const originalTitle = document.title;
+  document.title = 'Vehicle Compliance Report';
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Vehicle Compliance Report</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+          body { padding: 20px; font-family: Arial, sans-serif; }
+          table { width: 100%; border-collapse: collapse; }
+          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          th { background-color: #f2f2f2; }
+        </style>
+      </head>
+      <body>
+        <h2>Vehicle Compliance Report</h2>
+        <p>Generated on: ${new Date().toLocaleString()}</p>
+        ${printContent.outerHTML}
+      </body>
+    </html>
+  `);
+  printWindow.document.close();
+  printWindow.print();
+  document.title = originalTitle;
+  showToast('PDF export initiated', false);
+});
+
+// Add Vehicle Modal Function
+document.getElementById('addVehicleBtn').addEventListener('click', () => {
+  const newId = vehiclesData.length > 0 ? Math.max(...vehiclesData.map(v => v.id)) + 1 : 6;
+  
+  const modalOverlay = document.createElement('div');
+  modalOverlay.className = 'update-modal-overlay';
+  modalOverlay.style.position = 'fixed';
+  modalOverlay.style.top = '0';
+  modalOverlay.style.left = '0';
+  modalOverlay.style.width = '100%';
+  modalOverlay.style.height = '100%';
+  modalOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  modalOverlay.style.backdropFilter = 'blur(5px)';
+  modalOverlay.style.display = 'flex';
+  modalOverlay.style.alignItems = 'center';
+  modalOverlay.style.justifyContent = 'center';
+  modalOverlay.style.zIndex = '2000';
+  
+  const modalCard = document.createElement('div');
+  modalCard.style.backgroundColor = '#ffffff';
+  modalCard.style.borderRadius = '32px';
+  modalCard.style.maxWidth = '550px';
+  modalCard.style.width = '90%';
+  modalCard.style.padding = '1.5rem 1.8rem';
+  modalCard.style.boxShadow = '0 30px 40px rgba(0,0,0,0.2)';
+  modalCard.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e6edf2; margin-bottom: 1.4rem; padding-bottom: 0.6rem;">
+      <h3 style="margin:0; font-weight: 700; color: #1A4D5F;"><i class="bi bi-plus-circle me-2"></i>Add New Vehicle</h3>
+      <button id="closeAddModal" style="background: none; border: none; font-size: 1.8rem; cursor: pointer;">&times;</button>
+    </div>
+    <div style="margin-bottom: 0.8rem;">
+      <label style="font-weight: 600; font-size:0.8rem;">Vehicle Number *</label>
+      <input type="text" id="newVehNum" placeholder="e.g., MH 01 AB 1234" style="width:100%; padding:0.6rem; border-radius:40px; border:1px solid #cbdde4;">
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <div><label>Insurance Date</label><input type="date" id="newInsDate" style="width:100%; padding:0.5rem; border-radius:40px;"></div>
+      <div><label>PUC Date</label><input type="date" id="newPucDate" style="width:100%; padding:0.5rem; border-radius:40px;"></div>
+      <div><label>Road Date</label><input type="date" id="newRoadDate" style="width:100%; padding:0.5rem; border-radius:40px;"></div>
+      <div><label>Health/Permit</label><input type="date" id="newHealthDate" style="width:100%; padding:0.5rem; border-radius:40px;"></div>
+      <div><label>Fitness Date</label><input type="date" id="newFitnessDate" style="width:100%; padding:0.5rem; border-radius:40px;"></div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px;">
+      <button id="cancelAddBtn" style="background:#f1f5f9; border:none; border-radius:40px; padding:0.5rem 1.2rem;">Cancel</button>
+      <button id="saveAddBtn" style="background:#2c7a6e; border:none; border-radius:40px; padding:0.5rem 1.5rem; color:white; font-weight:600;">Add Vehicle</button>
+    </div>
+  `;
+  
+  modalOverlay.appendChild(modalCard);
+  document.body.appendChild(modalOverlay);
+  
+  const closeModal = () => modalOverlay.remove();
+  document.getElementById('closeAddModal')?.addEventListener('click', closeModal);
+  document.getElementById('cancelAddBtn')?.addEventListener('click', closeModal);
+  
+  document.getElementById('saveAddBtn')?.addEventListener('click', () => {
+    const newVehNum = document.getElementById('newVehNum').value.trim();
+    if (!newVehNum) {
+      showToast('Vehicle number is required', true);
+      return;
+    }
+    
+    const newVehicle = {
+      id: newId,
+      vehicleNumber: newVehNum,
+      insuranceDate: document.getElementById('newInsDate').value || '2025-12-31',
+      pucDate: document.getElementById('newPucDate').value || '2025-12-31',
+      roadDate: document.getElementById('newRoadDate').value || '2025-12-31',
+      healthPermitDate: document.getElementById('newHealthDate').value || '2025-12-31',
+      fitnessDate: document.getElementById('newFitnessDate').value || '2025-12-31'
+    };
+    
+    vehiclesData.push(newVehicle);
+    renderTable();
+    closeModal();
+    showToast(`✅ Vehicle ${newVehNum} added successfully!`, false);
+  });
+  
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+});
+
+// Excel Export (CSV with .xlsx extension - simplified)
+document.getElementById('exportExcel').addEventListener('click', () => {
+  const headers = ['Vehicle Number', 'Insurance Date', 'PUC Date', 'Road Date', 'Health/Permit Date', 'Fitness Date'];
+  const rows = vehiclesData.map(v => [
+    v.vehicleNumber,
+    formatDate(v.insuranceDate),
+    formatDate(v.pucDate),
+    formatDate(v.roadDate),
+    formatDate(v.healthPermitDate),
+    formatDate(v.fitnessDate)
+  ]);
+  
+  const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'vehicle_data.xls');
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast('Excel file exported successfully!', false);
+});
+</script>
+  <!-- scrollable table card -->
+  <div class="table-responsive-custom">
+    <table class="vehicle-table">
+      <thead>
+        <tr>
+          <th>Vehicle Number</th>
+          <th>Insurance Date</th>
+          <th>PUC Date</th>
+          <th>Road Date</th>
+          <th>Health/Permit Date</th>
+          <th>Fitness Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="vehicleTableBody">
+        <!-- JS will inject 5 dynamic rows + keep them mutable -->
+      </tbody>
+    </table>
+  </div>
+  <footer>
+    <i class="bi bi-database"></i> Scroll horizontally on smaller screens 
+  </footer>
+</div>
+
+<!-- hidden toast container -->
+<div id="liveToastMsg" class="toast-notify" style="display: none;"></div>
+
+<script>
+  // ---------- DUMMY DATA SET (5 entries with all required fields) ----------
+  let vehiclesData = [
+    {
+      id: 1,
+      vehicleNumber: "MH 12 AB 1234",
+      insuranceDate: "2025-06-15",
+      pucDate: "2025-03-10",
+      roadDate: "2025-08-22",
+      healthPermitDate: "2025-05-18",
+      fitnessDate: "2025-09-01"
+    },
+    {
+      id: 2,
+      vehicleNumber: "DL 3C QR 5678",
+      insuranceDate: "2024-12-01",
+      pucDate: "2025-02-28",
+      roadDate: "2025-07-14",
+      healthPermitDate: "2025-04-20",
+      fitnessDate: "2025-10-10"
+    },
+    {
+      id: 3,
+      vehicleNumber: "KA 51 MN 9090",
+      insuranceDate: "2025-01-20",
+      pucDate: "2025-03-25",
+      roadDate: "2025-09-30",
+      healthPermitDate: "2025-06-12",
+      fitnessDate: "2025-11-05"
+    },
+    {
+      id: 4,
+      vehicleNumber: "TN 22 BC 3344",
+      insuranceDate: "2025-02-10",
+      pucDate: "2025-04-05",
+      roadDate: "2025-10-18",
+      healthPermitDate: "2025-07-07",
+      fitnessDate: "2025-08-19"
+    },
+    {
+      id: 5,
+      vehicleNumber: "GJ 05 XY 7788",
+      insuranceDate: "2025-03-05",
+      pucDate: "2025-01-15",
+      roadDate: "2025-12-01",
+      healthPermitDate: "2025-09-25",
+      fitnessDate: "2025-12-20"
+    }
+  ];
+
+  // Helper: format YYYY-MM-DD to DD MMM YYYY (e.g., 15 Jun 2025)
+  function formatDate(dateStr) {
+    if (!dateStr) return "—";
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr;
+    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  // Show toast notification (disappears after 2.2 sec)
+  function showToast(message, isError = false) {
+    const toastEl = document.getElementById('liveToastMsg');
+    toastEl.style.display = 'block';
+    toastEl.style.backgroundColor = isError ? '#b13e3ed9' : '#1e5f6ee6';
+    toastEl.style.backdropFilter = 'blur(10px)';
+    toastEl.innerHTML = `<i class="bi ${isError ? 'bi-exclamation-triangle-fill' : 'bi-check-circle-fill'} me-2"></i>${message}`;
+    setTimeout(() => {
+      toastEl.style.display = 'none';
+    }, 2200);
+  }
+
+  // RENDER TABLE dynamically based on vehiclesData array
+  function renderTable() {
+    const tbody = document.getElementById('vehicleTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '';
+    vehiclesData.forEach(vehicle => {
+      const row = document.createElement('tr');
+      
+      // Vehicle Number cell with styled badge - no text wrap
+      const vehCell = document.createElement('td');
+      vehCell.innerHTML = `<span class="vehicle-number"><i class="bi bi-tag me-1"></i>${vehicle.vehicleNumber}</span>`;
+      
+      // Date cells with nowrap styling
+      const insCell = document.createElement('td');
+      insCell.innerHTML = `<span class="date-cell"><i class="bi bi-calendar3 me-1"></i>${formatDate(vehicle.insuranceDate)}</span>`;
+      
+      const pucCell = document.createElement('td');
+      pucCell.innerHTML = `<span class="date-cell"><i class="bi bi-calendar-check me-1"></i>${formatDate(vehicle.pucDate)}</span>`;
+      
+      const roadCell = document.createElement('td');
+      roadCell.innerHTML = `<span class="date-cell"><i class="bi bi-signpost-2 me-1"></i>${formatDate(vehicle.roadDate)}</span>`;
+      
+      const healthCell = document.createElement('td');
+      healthCell.innerHTML = `<span class="date-cell"><i class="bi bi-file-medical me-1"></i>${formatDate(vehicle.healthPermitDate)}</span>`;
+      
+      const fitnessCell = document.createElement('td');
+      fitnessCell.innerHTML = `<span class="date-cell"><i class="bi bi-heart-pulse me-1"></i>${formatDate(vehicle.fitnessDate)}</span>`;
+      
+      // Actions cell with buttons: Read, Update, Delete
+      const actionCell = document.createElement('td');
+      const btnGroup = document.createElement('div');
+      btnGroup.className = 'action-group';
+      
+      // READ button: shows all details in toast notification
+  const readBtn = document.createElement('button');
+  readBtn.className = 'btn-icon btn-read';
+  readBtn.innerHTML = '<i class="bi bi-eye-fill"></i> Read';
+  readBtn.addEventListener('click', (e) => {
+    window.location.href = "{% url 'admin_individual_dashboard' %}";
+  });
+      
+      // UPDATE button: opens modal for editing
+      const updateBtn = document.createElement('button');
+      updateBtn.className = 'btn-icon btn-update';
+      updateBtn.innerHTML = '<i class="bi bi-pencil-square"></i> Update';
+      updateBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openUpdateModal(vehicle.id);
+      });
+      
+      // DELETE button: removes entry with confirmation
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'btn-icon btn-delete';
+      deleteBtn.innerHTML = '<i class="bi bi-trash3"></i> Delete';
+      deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (confirm(`⚠️ Permanently delete record for ${vehicle.vehicleNumber}? This action cannot be undone.`)) {
+          const index = vehiclesData.findIndex(v => v.id === vehicle.id);
+          if (index !== -1) {
+            vehiclesData.splice(index, 1);
+            renderTable();
+            showToast(`🗑️ ${vehicle.vehicleNumber} removed from fleet.`, false);
+          }
+        }
+      });
+      
+      btnGroup.appendChild(readBtn);
+      btnGroup.appendChild(updateBtn);
+      btnGroup.appendChild(deleteBtn);
+      actionCell.appendChild(btnGroup);
+      
+      row.appendChild(vehCell);
+      row.appendChild(insCell);
+      row.appendChild(pucCell);
+      row.appendChild(roadCell);
+      row.appendChild(healthCell);
+      row.appendChild(fitnessCell);
+      row.appendChild(actionCell);
+      
+      tbody.appendChild(row);
+    });
+  }
+  
+  // ---------- UPDATE MODAL (Creative & smooth) ----------
+  let activeModal = null;
+  function openUpdateModal(vehicleId) {
+    const vehicle = vehiclesData.find(v => v.id === vehicleId);
+    if (!vehicle) return;
+    
+    // Remove any existing modal overlay
+    if (activeModal) {
+      activeModal.remove();
+      activeModal = null;
+    }
+    
+    // Create modal backdrop + container
+    const modalOverlay = document.createElement('div');
+    modalOverlay.className = 'update-modal-overlay';
+    modalOverlay.style.position = 'fixed';
+    modalOverlay.style.top = '0';
+    modalOverlay.style.left = '0';
+    modalOverlay.style.width = '100%';
+    modalOverlay.style.height = '100%';
+    modalOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    modalOverlay.style.backdropFilter = 'blur(5px)';
+    modalOverlay.style.display = 'flex';
+    modalOverlay.style.alignItems = 'center';
+    modalOverlay.style.justifyContent = 'center';
+    modalOverlay.style.zIndex = '2000';
+    
+    const modalCard = document.createElement('div');
+    modalCard.style.backgroundColor = '#ffffff';
+    modalCard.style.borderRadius = '32px';
+    modalCard.style.maxWidth = '550px';
+    modalCard.style.width = '90%';
+    modalCard.style.padding = '1.5rem 1.8rem';
+    modalCard.style.boxShadow = '0 30px 40px rgba(0,0,0,0.2)';
+    modalCard.style.fontFamily = "'Inter', sans-serif";
+    modalCard.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e6edf2; margin-bottom: 1.4rem; padding-bottom: 0.6rem;">
+        <h3 style="margin:0; font-weight: 700; color: #1A4D5F;"><i class="bi bi-pencil-square me-2"></i>Edit Compliance Record</h3>
+        <button id="closeModalBtn" style="background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #8aa3af; line-height: 1;">&times;</button>
+      </div>
+      <div style="margin-bottom: 0.8rem;">
+        <label style="font-weight: 600; font-size:0.8rem; text-transform:uppercase; color:#4a6f7c;">Vehicle Number</label>
+        <input type="text" id="updateVehNum" class="form-control" style="border-radius: 60px; border:1px solid #cbdde4; padding: 0.6rem 1rem; width:100%;" value="${vehicle.vehicleNumber}">
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
+        <div><label style="font-weight:500; font-size:0.75rem;">Insurance Date</label><input type="date" id="updateInsDate" class="form-control" style="border-radius: 40px; width:100%; padding: 0.5rem;" value="${vehicle.insuranceDate}"></div>
+        <div><label style="font-weight:500; font-size:0.75rem;">PUC Date</label><input type="date" id="updatePucDate" class="form-control" style="border-radius: 40px; width:100%; padding: 0.5rem;" value="${vehicle.pucDate}"></div>
+        <div><label style="font-weight:500; font-size:0.75rem;">Road Date</label><input type="date" id="updateRoadDate" class="form-control" style="border-radius: 40px; width:100%; padding: 0.5rem;" value="${vehicle.roadDate}"></div>
+        <div><label style="font-weight:500; font-size:0.75rem;">Health/Permit</label><input type="date" id="updateHealthDate" class="form-control" style="border-radius: 40px; width:100%; padding: 0.5rem;" value="${vehicle.healthPermitDate}"></div>
+        <div><label style="font-weight:500; font-size:0.75rem;">Fitness Date</label><input type="date" id="updateFitnessDate" class="form-control" style="border-radius: 40px; width:100%; padding: 0.5rem;" value="${vehicle.fitnessDate}"></div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px;">
+        <button id="cancelUpdateBtn" style="background:#f1f5f9; border:none; border-radius:40px; padding:0.5rem 1.2rem; font-weight:500; cursor:pointer;">Cancel</button>
+        <button id="saveUpdateBtn" style="background:#2c7a6e; border:none; border-radius:40px; padding:0.5rem 1.5rem; color:white; font-weight:600; cursor:pointer;">Save changes</button>
+      </div>
+    `;
+    
+    modalOverlay.appendChild(modalCard);
+    document.body.appendChild(modalOverlay);
+    activeModal = modalOverlay;
+    
+    // Helper close
+    const closeModal = () => {
+      if (activeModal) activeModal.remove();
+      activeModal = null;
+    };
+    
+    document.getElementById('closeModalBtn')?.addEventListener('click', closeModal);
+    document.getElementById('cancelUpdateBtn')?.addEventListener('click', closeModal);
+    
+    document.getElementById('saveUpdateBtn')?.addEventListener('click', () => {
+      const newVehicleNumber = document.getElementById('updateVehNum').value.trim();
+      if (!newVehicleNumber) {
+        showToast("Vehicle number cannot be empty", true);
+        return;
+      }
+      const newIns = document.getElementById('updateInsDate').value;
+      const newPuc = document.getElementById('updatePucDate').value;
+      const newRoad = document.getElementById('updateRoadDate').value;
+      const newHealth = document.getElementById('updateHealthDate').value;
+      const newFitness = document.getElementById('updateFitnessDate').value;
+      
+      if (!newIns || !newPuc || !newRoad || !newHealth || !newFitness) {
+        showToast("All date fields are required. Please fill complete dates.", true);
+        return;
+      }
+      
+      // update the vehicle object
+      vehicle.vehicleNumber = newVehicleNumber;
+      vehicle.insuranceDate = newIns;
+      vehicle.pucDate = newPuc;
+      vehicle.roadDate = newRoad;
+      vehicle.healthPermitDate = newHealth;
+      vehicle.fitnessDate = newFitness;
+      
+      renderTable();  // re-render table
+      closeModal();
+      showToast(`✏️ Vehicle ${newVehicleNumber} updated successfully!`, false);
+    });
+    
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) closeModal();
+    });
+  }
+  
+  // initial rendering
+  renderTable();
+  
+  // ensure responsive behavior for any dynamic content
+  window.addEventListener('resize', () => {});
+</script>
+
+</div>
+
+    
+</main>
+ 
+{% endblock content %}
